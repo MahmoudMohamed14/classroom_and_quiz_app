@@ -17,8 +17,9 @@ class CreateQuizScreen extends StatelessWidget {
   TextEditingController option2QuizControl=  TextEditingController();
   TextEditingController option3QuizControl=  TextEditingController();
   TextEditingController option4QuizControl=  TextEditingController();
+ late QuestionModel  questionModel;
 
-  var keyFormInformation= GlobalKey<FormState>();
+
   var keyFormQuestion= GlobalKey<FormState>();
 
 
@@ -33,13 +34,32 @@ class CreateQuizScreen extends StatelessWidget {
             title:Text('Create Quiz',style: Theme.of(context).textTheme.headline1,),
             actions: [
               defaultTextButton(onPress:() {
-                var model=QuizModel(
-                    title: titleQuizControl.text,
-                  date: dateQuizControl.text,
-                  time: timeQuizControl.text,
-                  questionMap: cubit.questionList.asMap()
-                );
-                print(model.toMap());
+        if(keyFormQuestion.currentState!.validate()) {
+
+          cubit.addQuestionToList(
+              question: questionQuizControl.text,
+              option1: option1QuizControl.text,
+              option2: option2QuizControl.text,
+            option3: option3QuizControl.text,
+            option4: option4QuizControl.text
+          );
+          cubit.questionList.map((e) {
+
+          });
+          Map<String, Map<String, dynamic>> questionMap={};
+          for(int i=0;i<cubit.questionList.length;i++){
+            questionMap['${i}']=cubit.questionList[i];
+          }
+
+          var quizModel = QuizModel(
+              title: titleQuizControl.text,
+              date: dateQuizControl.text,
+              time: timeQuizControl.text,
+              questionMap: questionMap
+          );
+         cubit.uploadQuiz(quizModel:quizModel,context: context );
+          print(quizModel.questionMap);
+        }
 
               }, name: 'submit')
             ],
@@ -134,7 +154,7 @@ class CreateQuizScreen extends StatelessWidget {
                       return null;
                     },
                         prefIcon: Icons.text_fields,
-                        onPress: (){}
+
                     ),
                     const SizedBox(height: 20,),
                     defaultEditText(control: option1QuizControl, label: 'Option1(correct answer)', validat: (s){
@@ -157,7 +177,7 @@ class CreateQuizScreen extends StatelessWidget {
                       return null;
                     },
                         prefIcon: Icons.text_fields,
-                        onPress: (){}
+
                     ),
                  if(cubit.isMulitpleChoice)   Column(
                       children: [
@@ -169,7 +189,7 @@ class CreateQuizScreen extends StatelessWidget {
                           return null;
                         },
                             prefIcon: Icons.text_fields,
-                            onPress: (){}
+
                         ),
                         const SizedBox(height: 20,),
                         defaultEditText(control: option4QuizControl,
@@ -188,14 +208,13 @@ class CreateQuizScreen extends StatelessWidget {
 
                     defaultButton(onPress: (){
                       if(keyFormQuestion.currentState!.validate()){
-                        QuestionModel questionModel=
-                        QuestionModel(question:questionQuizControl.text,
-                          optoin1: option1QuizControl.text,
-                          optoin2: option2QuizControl.text,
-                          optoin3: cubit.isMulitpleChoice?option3QuizControl.text:null,
-                          optoin4:cubit.isMulitpleChoice? option4QuizControl.text:null
+                        cubit.addQuestionToList(
+                            question: questionQuizControl.text,
+                            option1: option1QuizControl.text,
+                            option2: option2QuizControl.text,
+                            option3: option3QuizControl.text,
+                            option4: option4QuizControl.text
                         );
-                        cubit.addQuestionToList(questionModel: questionModel);
                         questionQuizControl.clear();
                         option1QuizControl.clear();
                         option2QuizControl.clear();
@@ -223,38 +242,5 @@ class CreateQuizScreen extends StatelessWidget {
 
     );
   }
-  Widget informationQuiz(){
-    return  Form(
-      key: keyFormInformation,
-      child: Column(
-        children: [
-          defaultEditText(control: titleQuizControl, label: 'titleQuiz', validat: (s){
-            if(s.toString().isEmpty){
-              return 'title is empty';
-            }
-            return null;
-          }),
-          SizedBox(height: 20,),
-          defaultEditText(control: dateQuizControl, label: 'date', validat: (s){
-            if(s.toString().isEmpty){
-              return 'date is empty';
-            }
-            return null;
-          }),
-          SizedBox(height: 20,),
-          defaultButton(onPress: (){
-            if(keyFormInformation.currentState!.validate()){
 
-            }
-
-          }, name: 'next',
-              width: 100
-
-          ),
-
-
-        ],
-      ),
-    );
-  }
 }

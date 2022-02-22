@@ -2,12 +2,12 @@ class QuizModel {
   String?title;
   String?date;
   String?time;
-  bool ?quizDone = false;
+  bool ?quizDone ;
 
-  Map<int, Map<String, dynamic>> ?questionMap={};
+  Map<String, Map<String, dynamic>> ?questionMap;
 
 
-  QuizModel({this.title, this.date, this.time, this.quizDone, this.questionMap});
+  QuizModel({this.title, this.date, this.time, this.quizDone=false, this.questionMap});
   QuizModel.fromJson({required Map<String,dynamic> json}){
 
     title=json['title'];

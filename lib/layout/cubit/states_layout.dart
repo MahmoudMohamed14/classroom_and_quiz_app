@@ -22,3 +22,9 @@ class GetStudentSuccessState extends StateLayout{}
 class ActionButtonQuizState extends StateLayout{}
 class DropDownButtonState extends StateLayout{}
 class AddQuestionToList extends StateLayout{}
+class UploadingQuizErrorState extends StateLayout{
+  String?error;
+  UploadingQuizErrorState({this.error});
+}
+class UploadingQuizLoadingState extends StateLayout{}
+class UploadingQuizSuccessState extends StateLayout{}

@@ -7,6 +7,7 @@ import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/class_room_model.dart';
 import 'package:quizapp/models/post_model.dart';
 import 'package:quizapp/models/question_model.dart';
+import 'package:quizapp/models/quiz_model.dart';
 import 'package:quizapp/models/student_model.dart';
 import 'package:quizapp/moduls/home_work/home_work.dart';
 import 'package:quizapp/moduls/people/people.dart';
@@ -24,7 +25,9 @@ class CubitLayout extends Cubit<StateLayout> {
   List<Map<String,dynamic>> questionList=[];
   bool isActionOpen=true;
   bool isMulitpleChoice=true;
-  void addQuestionToList({ required QuestionModel questionModel}){
+  late QuestionModel questionModel;
+  void addQuestionToList({required String question,required String option1,required String option2, String? option3, String? option4}){
+    questionModel=QuestionModel(question: question,optoin1: option1,optoin2: option2,optoin3:isMulitpleChoice? option3:'null',optoin4:isMulitpleChoice? option4:'null');
     questionList.add(questionModel.toMap());
     emit(AddQuestionToList());
   }
@@ -126,5 +129,21 @@ class CubitLayout extends Cubit<StateLayout> {
 
     });
 
+  }
+  void uploadQuiz({required QuizModel quizModel,context}){
+    emit(UploadingQuizLoadingState());
+    FirebaseFirestore.instance
+        .collection('Classrooms')
+        .doc(classRoomModel!.className)
+        .collection('quiz').add(quizModel.toMap()).then((value) {
+          questionList=[];
+          Navigator.pop(context);
+          emit(UploadingQuizSuccessState());
+
+    }).catchError((onError){
+      emit(UploadingQuizErrorState(error: onError.toString()));
+      print('error her'+onError.toString());
+
+    });
   }
 }
