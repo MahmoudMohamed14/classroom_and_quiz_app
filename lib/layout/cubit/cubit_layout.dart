@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quizapp/cubit_app/cubit_app.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/class_room_model.dart';
 import 'package:quizapp/models/post_model.dart';
@@ -27,7 +26,7 @@ class CubitLayout extends Cubit<StateLayout> {
   bool isMulitpleChoice=true;
   late QuestionModel questionModel;
   void addQuestionToList({required String question,required String option1,required String option2, String? option3, String? option4}){
-    questionModel=QuestionModel(question: question,optoin1: option1,optoin2: option2,optoin3:isMulitpleChoice? option3:'null',optoin4:isMulitpleChoice? option4:'null');
+    questionModel=QuestionModel(question: question,optoin1: option1,optoin2: option2,optoin3:isMulitpleChoice? option3:null,optoin4:isMulitpleChoice? option4:null);
     questionList.add(questionModel.toMap());
     emit(AddQuestionToList());
   }
@@ -137,12 +136,37 @@ class CubitLayout extends Cubit<StateLayout> {
         .doc(classRoomModel!.className)
         .collection('quiz').add(quizModel.toMap()).then((value) {
           questionList=[];
+          getQuiz();
           Navigator.pop(context);
-          emit(UploadingQuizSuccessState());
+
+
 
     }).catchError((onError){
       emit(UploadingQuizErrorState(error: onError.toString()));
       print('error her'+onError.toString());
+
+    });
+  }
+  List<QuizModel>quizList=[];
+  void getQuiz(){
+    quizList=[];
+
+    FirebaseFirestore.instance
+        .collection('Classrooms')
+        .doc(classRoomModel!.className)
+        .collection('quiz').get().then((value) {
+          value.docs.forEach((element) {
+            quizList.add(QuizModel.fromJson(json: element.data()));
+
+
+          });
+
+
+      emit(GetQuizSuccessState());
+
+    }).catchError((onError){
+      emit(GetQuizErrorState(error: onError.toString()));
+      print('error her for get quiz'+onError.toString());
 
     });
   }

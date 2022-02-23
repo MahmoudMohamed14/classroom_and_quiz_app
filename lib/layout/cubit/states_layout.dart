@@ -28,3 +28,9 @@ class UploadingQuizErrorState extends StateLayout{
 }
 class UploadingQuizLoadingState extends StateLayout{}
 class UploadingQuizSuccessState extends StateLayout{}
+class GetQuizErrorState extends StateLayout{
+  String?error;
+  GetQuizErrorState({this.error});
+}
+class GetQuizLoadingState extends StateLayout{}
+class GetQuizSuccessState extends StateLayout{}

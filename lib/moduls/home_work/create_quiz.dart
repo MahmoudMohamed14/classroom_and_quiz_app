@@ -26,7 +26,11 @@ class CreateQuizScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CubitLayout,StateLayout>(
-      listener: (context,state){},
+      listener: (context,state){
+        if(state is GetQuizSuccessState){
+          showToast(text: 'add quiz', state: ToastState.SUCCESS);
+        }
+      },
       builder: (context,state){
         var cubit=CubitLayout.get(context);
         return Scaffold(
@@ -51,6 +55,7 @@ class CreateQuizScreen extends StatelessWidget {
             questionMap['${i}']=cubit.questionList[i];
           }
 
+
           var quizModel = QuizModel(
               title: titleQuizControl.text,
               date: dateQuizControl.text,
@@ -64,13 +69,21 @@ class CreateQuizScreen extends StatelessWidget {
               }, name: 'submit')
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: keyFormQuestion,
-              child: SingleChildScrollView(
+          body: SingleChildScrollView(
+
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: keyFormQuestion,
                 child: Column(
                   children: [
+                    state is UploadingQuizLoadingState? Column(
+                     children: [
+                       SizedBox(height: 20,),
+                       LinearProgressIndicator(),
+                       SizedBox(height: 20,),
+                     ],
+                    ):SizedBox(),
                     defaultEditText(control: titleQuizControl, label: 'titleQuiz', validat: (s){
                       if(s.toString().isEmpty){
                         return 'title is empty';
