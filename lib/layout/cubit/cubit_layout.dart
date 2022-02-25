@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/class_room_model.dart';
 import 'package:quizapp/models/post_model.dart';
@@ -24,9 +27,10 @@ class CubitLayout extends Cubit<StateLayout> {
   List<Map<String,dynamic>> questionList=[];
   bool isActionOpen=true;
   bool isMulitpleChoice=true;
+
   late QuestionModel questionModel;
   void addQuestionToList({required String question,required String option1,required String option2, String? option3, String? option4}){
-    questionModel=QuestionModel(question: question,optoin1: option1,optoin2: option2,optoin3:isMulitpleChoice? option3:null,optoin4:isMulitpleChoice? option4:null);
+    questionModel=QuestionModel(question: question,optoin1: option1,optoin2: option2,optoin3:isMulitpleChoice? option3:'null',optoin4:isMulitpleChoice? option4:'null');
     questionList.add(questionModel.toMap());
     emit(AddQuestionToList());
   }
@@ -49,6 +53,24 @@ class CubitLayout extends Cubit<StateLayout> {
 
   static CubitLayout get(context) {
     return BlocProvider.of(context);
+  }
+  List<String> optionSelectList=[];
+  void addNumberOfOption({int ?number}){
+    optionSelectList=[];
+    for(int i=0;i<number!;i++){
+      optionSelectList.add('empty');
+
+    }
+    emit(AddNumberOfOption ());
+
+  }
+
+  void selectOption({required String option,required int index}){
+   optionSelectList[index]=option;
+
+    emit(OptionSelectState());
+
+
   }
   void  changeBottomNav({required int index})
   {
@@ -148,15 +170,17 @@ class CubitLayout extends Cubit<StateLayout> {
     });
   }
   List<QuizModel>quizList=[];
+  List<String>quizIdList=[];
   void getQuiz(){
     quizList=[];
-
+    quizIdList=[];
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.className)
         .collection('quiz').get().then((value) {
           value.docs.forEach((element) {
             quizList.add(QuizModel.fromJson(json: element.data()));
+            quizIdList.add(element.id);
 
 
           });

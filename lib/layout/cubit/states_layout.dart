@@ -34,3 +34,5 @@ class GetQuizErrorState extends StateLayout{
 }
 class GetQuizLoadingState extends StateLayout{}
 class GetQuizSuccessState extends StateLayout{}
+class OptionSelectState extends StateLayout{}
+class AddNumberOfOption extends StateLayout{}
