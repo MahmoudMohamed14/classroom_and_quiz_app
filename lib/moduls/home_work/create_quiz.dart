@@ -78,12 +78,12 @@ class CreateQuizScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     state is UploadingQuizLoadingState? Column(
-                     children: [
+                     children: const[
                        SizedBox(height: 20,),
                        LinearProgressIndicator(),
                        SizedBox(height: 20,),
                      ],
-                    ):SizedBox(),
+                    ):const SizedBox(),
                     defaultEditText(control: titleQuizControl, label: 'titleQuiz', validat: (s){
                       if(s.toString().isEmpty){
                         return 'title is empty';
@@ -92,7 +92,7 @@ class CreateQuizScreen extends StatelessWidget {
                     },
                       prefIcon: Icons.text_fields
                     ),
-                    SizedBox(height: 20,),
+                    const  SizedBox(height: 20,),
                     defaultEditText(control: dateQuizControl, label: 'date', validat: (s)
                     {
                       if(s.toString().isEmpty){
@@ -115,12 +115,12 @@ class CreateQuizScreen extends StatelessWidget {
                       prefIcon: Icons.date_range
 
                     ),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     defaultEditText(control: timeQuizControl,
                         label: 'Time',
                         validat: (s) {
                       if(s.toString().isEmpty){
-                        return 'date is empty';
+                        return 'time is empty';
                       }
                       return null;
                     },
@@ -136,7 +136,7 @@ class CreateQuizScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20,),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                      padding:const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
                       width: double.infinity,
                       height: 60,
                       decoration: BoxDecoration(
@@ -155,7 +155,7 @@ class CreateQuizScreen extends StatelessWidget {
 
                           items:const[
                         DropdownMenuItem<bool>(child: Text('Multiple Choice',),value: true,),
-                        DropdownMenuItem<bool>(child: Text('Multiple '),value: false,),
+                        DropdownMenuItem<bool>(child: Text('True and False '),value: false,),
                       ]
                       ),
                     ),

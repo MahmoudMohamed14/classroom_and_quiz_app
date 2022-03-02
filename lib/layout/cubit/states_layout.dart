@@ -36,3 +36,19 @@ class GetQuizLoadingState extends StateLayout{}
 class GetQuizSuccessState extends StateLayout{}
 class OptionSelectState extends StateLayout{}
 class AddNumberOfOption extends StateLayout{}
+class UploadingStudentAnswerErrorState extends StateLayout{
+  String?error;
+  UploadingStudentAnswerErrorState({this.error});
+}
+class UploadingStudentAnswerLoadingState extends StateLayout{}
+class UploadingStudentAnswerSuccessState extends StateLayout{}
+class GetStudentQuizStateErrorState extends StateLayout{
+  String?error;
+  GetStudentQuizStateErrorState({this.error});
+}
+class GetStudentQuizStateSuccessState extends StateLayout{}
+class GetStudentAnswerErrorState extends StateLayout{
+  String?error;
+  GetStudentAnswerErrorState({this.error});
+}
+class GetStudentAnswerSuccessState extends StateLayout{}

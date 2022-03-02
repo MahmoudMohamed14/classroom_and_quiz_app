@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
 
          MultiBlocProvider(
            providers: [
-             BlocProvider(create: (BuildContext context)=>CubitApp()..getClassName()..getCurrentUser()..getMyAllClassRoom(),),
+             BlocProvider(create: (BuildContext context)=>CubitApp()..getClassName()..getCurrentUser()..getMyAllClassRoom()..getAllUser(),),
              BlocProvider<CubitLayout>(create: (context)=>CubitLayout()),
            ],
            child: BlocConsumer<CubitApp,StateApp>(

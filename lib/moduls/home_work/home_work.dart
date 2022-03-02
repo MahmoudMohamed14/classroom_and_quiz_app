@@ -10,6 +10,7 @@ import 'package:quizapp/moduls/home_work/create_quiz.dart';
 import 'package:quizapp/moduls/home_work/quiz_screen.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/network/local/cache_helper.dart';
 
 class HomeWork extends StatelessWidget {
   var scaffoldKey=GlobalKey<ScaffoldState>();
@@ -65,11 +66,9 @@ class HomeWork extends StatelessWidget {
               builder: (context)=>ListView.separated(itemBuilder: (context,index)=>quizBuildItem(
                   context: context,
                   quizModel: cubit.quizList[index],
-                  quizId: cubit.quizIdList[index]
-
+                  quizId: cubit.quizIdList[index],
 
               ),
-
                   separatorBuilder: (context,index)=>const SizedBox(height: 20,),
                   itemCount: cubit.quizList.length),
               fallback:(context)=> const Center(
@@ -81,6 +80,8 @@ class HomeWork extends StatelessWidget {
               ),
             ),
           ),
+
+
         );
       },
 
@@ -90,36 +91,39 @@ class HomeWork extends StatelessWidget {
   Widget quizBuildItem({
     context,
     required QuizModel quizModel,
-    String ?quizId}){
+    String ?quizId,}){
     return  InkWell(
       onTap: (){
+        if(globalUserModel!.isTeacher!||CacheHelper.getData(key: quizId!+globalUserModel!.email!)==null){
+          List<List<String>>listOfAnswer=[];
+          List<String>listOfQuestionText=[];
+          List<String>listOfAnswerText=[];
+          quizModel.questionMap!.forEach((key, value) {
+            listOfQuestionText.add( value['question'],);
+            listOfAnswerText.add(  value['option1']);
+            listOfAnswer.add( [
 
-        List<List<String>>listOfAnswer=[];
-        List<String>listOfQuestionText=[];
-        List<String>listOfAnswerText=[];
+              value['option4'],
+              value['option2'],
+              value['option1'],
+              value['option3'],
 
-        print(CubitLayout.get(context).optionSelectList);
+            ]);
+          });
 
+          listOfAnswer.forEach((element) {
+            element.shuffle();
+          });
+          CubitLayout.get(context).addNumberOfOption(number: listOfQuestionText.length);
+          CubitLayout.get(context). getStudentAnswer(quizId: quizId!);
 
-        quizModel.questionMap!.forEach((key, value) {
-          listOfQuestionText.add( value['question'],);
-          listOfAnswerText.add(  value['option1']);
-          listOfAnswer.add( [
+          navigateTo(context, QuizScreen(QuizId: quizId,
+            answerList: listOfAnswer,
+            correctAnswer: listOfAnswerText,
+            questionList: listOfQuestionText,));
 
-            value['option4'],
-            value['option2'],
-            value['option1'],
-            value['option3'],
+        }
 
-          ]);
-        });
-
-        listOfAnswer.forEach((element) {
-          element.shuffle();
-        });
-        CubitLayout.get(context).addNumberOfOption(number: listOfQuestionText.length);
-
-        navigateTo(context, QuizScreen(answerList: listOfAnswer,correctAnswer: listOfAnswerText,questionList: listOfQuestionText,));
 
       },
       child: Container(
@@ -128,7 +132,7 @@ class HomeWork extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
+               const CircleAvatar(
                   backgroundImage:  AssetImage('assets/image/quizimage.png',),
 
                   radius: 27,
@@ -144,7 +148,7 @@ class HomeWork extends StatelessWidget {
                     ],
                   ),
                 ),
-               if(!globalUserModel!.isTeacher!) Icon(quizModel.quizDone!?Icons.check_box:Icons.check_box_outline_blank,color: mainColor,)
+               if(!globalUserModel!.isTeacher!) Icon(CacheHelper.getData(key: quizId!+globalUserModel!.email!)==null?Icons.check_box_outline_blank:Icons.check_box,color: mainColor,)
               ],
             )
           ],

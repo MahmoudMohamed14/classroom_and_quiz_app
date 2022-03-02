@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
+import 'package:quizapp/models/answer_student_model.dart';
 import 'package:quizapp/models/class_room_model.dart';
 import 'package:quizapp/models/post_model.dart';
 import 'package:quizapp/models/question_model.dart';
@@ -22,11 +23,25 @@ class CubitLayout extends Cubit<StateLayout> {
   ClassRoom? classRoomModel;
   String? classId;
   int index=0;
+  int indexForQuiz=0;
   List<Widget> listWidget=[postScreen(),HomeWork(),PeopleScreen()];
   List<String> listTitle=[];
   List<Map<String,dynamic>> questionList=[];
   bool isActionOpen=true;
   bool isMulitpleChoice=true;
+  void  changeBottomNavForQuiz({required int index})
+  {
+
+
+
+    this. indexForQuiz = index;
+
+
+    emit( ChangeBottomNavState());
+
+
+
+  }
 
   late QuestionModel questionModel;
   void addQuestionToList({required String question,required String option1,required String option2, String? option3, String? option4}){
@@ -55,10 +70,13 @@ class CubitLayout extends Cubit<StateLayout> {
     return BlocProvider.of(context);
   }
   List<String> optionSelectList=[];
+  List<int> counterList=[];
   void addNumberOfOption({int ?number}){
     optionSelectList=[];
+    counterList=[];
     for(int i=0;i<number!;i++){
       optionSelectList.add('empty');
+      counterList.add(0);
 
     }
     emit(AddNumberOfOption ());
@@ -75,9 +93,8 @@ class CubitLayout extends Cubit<StateLayout> {
   void  changeBottomNav({required int index})
   {
 
-
-
      this. index = index;
+
 
 
   getAllStudent();
@@ -161,8 +178,6 @@ class CubitLayout extends Cubit<StateLayout> {
           getQuiz();
           Navigator.pop(context);
 
-
-
     }).catchError((onError){
       emit(UploadingQuizErrorState(error: onError.toString()));
       print('error her'+onError.toString());
@@ -186,6 +201,8 @@ class CubitLayout extends Cubit<StateLayout> {
           });
 
 
+
+
       emit(GetQuizSuccessState());
 
     }).catchError((onError){
@@ -194,4 +211,46 @@ class CubitLayout extends Cubit<StateLayout> {
 
     });
   }
+  AnswerStudentModel? answerStudentModel;
+  void upLoadingStudentAnswer({context, required String quizId,required myAnswer}){
+   answerStudentModel=AnswerStudentModel(name: globalUserModel!.name,email:globalUserModel!.email,myAnswer: myAnswer );
+    FirebaseFirestore.instance
+        .collection('Classrooms')
+        .doc(classRoomModel!.className)
+        .collection('quiz').doc(quizId)
+        .collection('studentAnswer').doc(globalUserModel!.email)
+        .set(answerStudentModel!.toMap()).then((value) {
+
+            Navigator.pop(context);
+          emit(UploadingStudentAnswerSuccessState());
+    }).catchError((onError){
+      emit(UploadingStudentAnswerErrorState(error: onError.toString()));
+    });
+
+  }
+
+
+  List<AnswerStudentModel>listAnswerStudentModel=[];
+  void getStudentAnswer({required String quizId}){
+    listAnswerStudentModel=[];
+    FirebaseFirestore.instance
+        .collection('Classrooms')
+        .doc(classRoomModel!.className)
+        .collection('quiz')
+        .doc(quizId)
+        .collection('studentAnswer').
+       get().then((value) {
+
+         value.docs.forEach((element) {
+           listAnswerStudentModel.add(AnswerStudentModel.fromJson(json: element.data()));
+         });
+
+
+      emit(GetStudentAnswerSuccessState ());
+    }).catchError((onError){
+      emit(GetStudentAnswerErrorState(error: onError.toString()));
+    });
+
+  }
+
 }
