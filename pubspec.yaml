@@ -45,7 +45,10 @@ dependencies:
   conditional_builder_null_safety: ^0.0.4
   shared_preferences: ^2.0.7
   intl: ^0.17.0
-  firebase_messaging: ^11.2.7
+  firebase_messaging: ^11.2.8
+
+
+
 
 
 

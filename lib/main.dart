@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,25 +10,30 @@ import 'package:quizapp/cubit_app/cubit_app.dart';
 import 'package:quizapp/cubit_app/states_app.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/moduls/classrooms/classrooms.dart';
-
-
 import 'package:quizapp/moduls/login/login_screen.dart';
-
-
-
 import 'package:flutter/services.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
 
-
-
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
 
+
+
   await Firebase.initializeApp();
   await CacheHelper.init();
-  if(CacheHelper.getData(key: 'email')!=null)
-  myEmail = CacheHelper.getData(key: 'email');
+  var token= await FirebaseMessaging.instance.getToken();
+  print('token= '+token.toString());
+  FirebaseMessaging.onMessage.listen((event) {
+    print(event.data.toString());
+
+  });
+
+
+  if(CacheHelper.getData(key: 'email')!=null) {
+    myEmail = CacheHelper.getData(key: 'email');
+  }
+
 
   BlocOverrides.runZoned(
         () {
@@ -42,7 +48,6 @@ void main()async {
 }
 
 class MyApp extends StatelessWidget {
-
 
   // This widget is the root of your application.
   @override
