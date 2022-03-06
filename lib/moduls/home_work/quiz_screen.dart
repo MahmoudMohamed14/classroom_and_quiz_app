@@ -34,7 +34,10 @@ class QuizScreen extends StatelessWidget {
 
         ];
         return  Scaffold(
-          appBar: AppBar(),
+         appBar: AppBar(
+           leading: CubitApp.get(context).currentUser.isTeacher!?
+           IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back)):SizedBox(),
+         ),
           body: CubitApp.get(context).currentUser.isTeacher!?bodyList[cubit.indexForQuiz]:quizBody(context),
           bottomNavigationBar:CubitApp.get(context).currentUser.isTeacher!?
           BottomNavigationBar(

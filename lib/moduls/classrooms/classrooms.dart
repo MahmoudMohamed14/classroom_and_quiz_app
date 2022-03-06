@@ -187,10 +187,15 @@ class ClassScreen extends StatelessWidget {
         ),
          body: ConditionalBuilder(
           condition:cubit.myClass.length>0 ,
-          builder:(context)=> ListView.separated(
-               itemBuilder: (context,index)=>buildClassRoomItem(context: context,model: cubit.myClass[index],classId: cubit.myClassId[index]),
-               separatorBuilder: (context,index)=>SizedBox(),
-               itemCount: cubit.myClass.length),
+          builder:(context)=> Padding(
+            padding: const EdgeInsets.all(20),
+            child: ListView.separated(
+                 itemBuilder: (context,index)=>buildClassRoomItem(context: context,model: cubit.myClass[index],classId: cubit.myClassId[index]),
+                 separatorBuilder: (context,index)=>SizedBox(
+                   height: 20,
+                 ),
+                 itemCount: cubit.myClass.length),
+          ),
            fallback: (context)=> state is GetMyAllClassLoadingState?Center(child: CircularProgressIndicator()):Center(child: Text('No ClassRoom',style: Theme.of(context).textTheme.headline1!.copyWith(color:Colors.grey ),)),
          ),
       );},
@@ -206,88 +211,85 @@ class ClassScreen extends StatelessWidget {
 
         navigateTo(context, LayoutScreen(model: model,));
       },
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(10),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(10),
 
 
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.cyan
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${model!.className}',style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),),
-                      SizedBox(height: 5,),
-                      Text('${model.subject}',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),),
-                    ],
-                  ),
-                  Spacer(),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.cyan
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('${model!.className}',style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),),
+                    SizedBox(height: 5,),
+                    Text('${model.subject}',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),),
+                  ],
+                ),
+                Spacer(),
 
-                    PopupMenuButton(
-                      onSelected: (value){
-                        switch (value ){
-                          case 'edit':{
-                            showToast(text: value.toString(), state: ToastState.SUCCESS);
-                         break;
-                          }
-                          case 'delete':{
-                            showToast(text: value.toString(), state: ToastState.SUCCESS);
-                            break;
-                          }
-                          case 'unenroll':{
-                            CubitApp.get(context).deleteStudentToClassRoom(className:model.className!,studentEmail: myEmail!);
-                            CubitApp.get(context).deleteClassRoomFromStudent(className:model.className! );
-
-                            showToast(text: value.toString(), state: ToastState.SUCCESS);
-
-                            break;
-                          }
-
-
+                  PopupMenuButton(
+                    onSelected: (value){
+                      switch (value ){
+                        case 'edit':{
+                          showToast(text: value.toString(), state: ToastState.SUCCESS);
+                       break;
                         }
-                      },
+                        case 'delete':{
+                          showToast(text: value.toString(), state: ToastState.SUCCESS);
+                          break;
+                        }
+                        case 'unenroll':{
+                          CubitApp.get(context).deleteStudentToClassRoom(className:model.className!,studentEmail: myEmail!);
+                          CubitApp.get(context).deleteClassRoomFromStudent(className:model.className! );
+
+                          showToast(text: value.toString(), state: ToastState.SUCCESS);
+
+                          break;
+                        }
 
 
-                      icon: Icon(Icons.more_vert,color: Colors.white,),
+                      }
+                    },
 
-                      itemBuilder: (BuildContext context){
-                      return CubitApp.get(context).currentUser.isTeacher!?
-                      MenuItem.menuListTeacher.map(( String e) {
-                        return PopupMenuItem<String>(
+
+                    icon: Icon(Icons.more_vert,color: Colors.white,),
+
+                    itemBuilder: (BuildContext context){
+                    return CubitApp.get(context).currentUser.isTeacher!?
+                    MenuItem.menuListTeacher.map(( String e) {
+                      return PopupMenuItem<String>(
+
+
+                        value: e,
+                          child:Text(e) );
+                    }).toList(): MenuItem.menuListStudent.map(( String e) {
+                      return PopupMenuItem<String>(
 
 
                           value: e,
-                            child:Text(e) );
-                      }).toList(): MenuItem.menuListStudent.map(( String e) {
-                        return PopupMenuItem<String>(
+                          child:Text(e) );
+                    }).toList();
+
+                  },
+
+                  )
+
+              ],
+            ),
+            SizedBox(height: 50,),
+            Text('${model.teacherName}',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),),
 
 
-                            value: e,
-                            child:Text(e) );
-                      }).toList();
-
-                    },
-
-                    )
-
-                ],
-              ),
-              SizedBox(height: 50,),
-              Text('${model.teacherName}',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),),
-
-
-            ],
-          ),
+          ],
         ),
       ),
     );

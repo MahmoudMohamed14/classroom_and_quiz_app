@@ -18,7 +18,12 @@ class HomeWork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CubitLayout,StateLayout>(
-      listener: (context,state){},
+      listener: (context,state){
+        if(state is DeleteQuizSuccessState){
+          showToast(text: 'Delete Quiz Successfully', state: ToastState.SUCCESS);
+          CubitLayout.get(context).getQuiz();
+        }
+      },
       builder: (context,state){
         var cubit=CubitLayout.get(context);
         return Scaffold(
@@ -149,8 +154,13 @@ class HomeWork extends StatelessWidget {
                   ),
                 ),
                if(!globalUserModel!.isTeacher!) Icon(CacheHelper.getData(key: quizId!+globalUserModel!.email!)==null?Icons.check_box_outline_blank:Icons.check_box,color: mainColor,)
+                else IconButton(onPressed: (){
+                  CubitLayout.get(context).deleteQuiz(quizId: quizId!);
+
+               }, icon: Icon(Icons.delete,color: mainColor,)),
               ],
             )
+
           ],
         ),
 

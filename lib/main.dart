@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,25 +13,30 @@ import 'package:quizapp/moduls/login/login_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
+import 'package:quizapp/shared/network/remotely/dio_helper.dart';
+
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
-
   await Firebase.initializeApp();
   await CacheHelper.init();
+
   var token= await FirebaseMessaging.instance.getToken();
   print('token= '+token.toString());
-  FirebaseMessaging.onMessage.listen((event) {
-    print(event.data.toString());
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print(message.data.toString());
 
   });
+
+
 
 
   if(CacheHelper.getData(key: 'email')!=null) {
     myEmail = CacheHelper.getData(key: 'email');
   }
+  DioHelper.init();
 
 
   BlocOverrides.runZoned(

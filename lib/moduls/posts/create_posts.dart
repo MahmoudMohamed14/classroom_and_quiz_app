@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/shared/componant/componant.dart';
+import 'package:quizapp/shared/network/remotely/dio_helper.dart';
 
 class CreatePost extends StatelessWidget {
 
@@ -13,8 +14,11 @@ class CreatePost extends StatelessWidget {
 
     return BlocConsumer<CubitLayout,StateLayout>(
       listener: (context,state){
-        if(state is CreatePostSuccessState)
+        if(state is CreatePostSuccessState) {
+          DioHelper.postNotification();
           Navigator.pop(context);
+        }
+
 
       },
       builder: (context,state){
@@ -38,7 +42,7 @@ class CreatePost extends StatelessWidget {
               children: [
                 if(state is CreatePostLoadingState)
                   Column(
-                    children: [
+                    children: const [
                       LinearProgressIndicator(),
                       SizedBox(height: 20,)
                     ],

@@ -126,8 +126,10 @@ class CubitLayout extends Cubit<StateLayout> {
 
   }
   List<PostModel> listPost=[];
+  List<String> listPostId=[];
   void getPost(){
     listPost=[];
+    listPostId=[];
 
     emit(GetPostLoadingState());
     FirebaseFirestore.instance
@@ -138,6 +140,7 @@ class CubitLayout extends Cubit<StateLayout> {
         .then((value) {
           value.docs.forEach((element) {
             listPost.add(PostModel.fromJson(json: element.data()));
+            listPostId.add(element.id);
           });
       emit(GetPostSuccessState());
 
@@ -173,7 +176,8 @@ class CubitLayout extends Cubit<StateLayout> {
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.className)
-        .collection('quiz').add(quizModel.toMap()).then((value) {
+        .collection('quiz')
+        .add(quizModel.toMap()).then((value) {
           questionList=[];
           getQuiz();
           Navigator.pop(context);
@@ -252,5 +256,43 @@ class CubitLayout extends Cubit<StateLayout> {
     });
 
   }
+  void deletePost(postId){
+
+
+
+    FirebaseFirestore.instance
+        .collection('Classrooms')
+        .doc(classRoomModel!.className!)
+        .collection('posts')
+        .doc(postId)
+        .delete()
+        .then((value) {
+          emit(DeletePostSuccessState());
+
+
+    }).catchError((onError){
+      emit(DeletePostErrorState(error: onError.toString()));
+
+    });
+
+  }
+  void deleteQuiz({required String quizId}){
+
+    FirebaseFirestore.instance
+        .collection('Classrooms')
+        .doc(classRoomModel!.className)
+        .collection('quiz')
+        .doc(quizId).delete().then((value) {
+      emit(DeleteQuizSuccessState());
+
+
+
+    }).catchError((onError){
+      emit(DeleteQuizErrorState(error: onError.toString()));
+      print('Delete error her'+onError.toString());
+
+    });
+  }
+
 
 }

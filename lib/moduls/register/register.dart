@@ -158,6 +158,35 @@ class Register extends StatelessWidget {
                     }
                 ),
                 SizedBox(height: 20,),
+                Container(
+                  padding:const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                  width: double.infinity,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: mainColor)
+
+                  ),
+                  child: DropdownButton(
+
+                      isExpanded: true,
+                      iconSize: 40,
+
+                      value:  RegisterCubit.get(context).isTeacher,
+
+
+                      onChanged: ( value){
+                        RegisterCubit.get(context).radioButton(teacher: value);
+
+                      },
+
+                      items:const[
+                        DropdownMenuItem<bool>(child: Text('Teacher',),value: true,),
+                        DropdownMenuItem<bool>(child: Text('Student '),value: false,),
+                      ]
+                  ),
+                ),
+                SizedBox(height: 20,),
 
                state is RegisterLoadingState? CircularProgressIndicator()
                     :defaultButton(onPress: (){
@@ -175,51 +204,7 @@ class Register extends StatelessWidget {
                       }
 
                     }, name: 'Register'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Radio(value: true
-                            , groupValue: RegisterCubit.get(context).isTeacher
-                            , onChanged: (value){
-                              RegisterCubit.get(context).radioButton(teacher: value);
 
-                            },
-                            activeColor: mainColor,
-
-
-                          ),
-                          SizedBox(width: 5,),
-                          Text('Teacher'),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16,),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Radio(value: false
-                            , groupValue: RegisterCubit.get(context).isTeacher
-                            , onChanged: (value){
-                              RegisterCubit.get(context).radioButton(teacher: value);
-                            },
-                            activeColor: mainColor,
-
-
-                          ),
-                          SizedBox(width: 5,),
-                          Text('Student'),
-                        ],
-                      ),
-                    ),
-
-                  ],
-
-                )
 
 
 

@@ -17,6 +17,11 @@ class GetStudentErrorState extends StateLayout{
   String?error;
   GetStudentErrorState({this.error});
 }
+class DeletePostSuccessState extends StateLayout{}
+class DeletePostErrorState extends StateLayout{
+  String?error;
+  DeletePostErrorState({this.error});
+}
 class GetStudentLoadingState extends StateLayout{}
 class GetStudentSuccessState extends StateLayout{}
 class ActionButtonQuizState extends StateLayout{}
@@ -34,6 +39,12 @@ class GetQuizErrorState extends StateLayout{
 }
 class GetQuizLoadingState extends StateLayout{}
 class GetQuizSuccessState extends StateLayout{}
+class DeleteQuizErrorState extends StateLayout{
+  String?error;
+  DeleteQuizErrorState({this.error});
+}
+class DeleteQuizLoadingState extends StateLayout{}
+class DeleteQuizSuccessState extends StateLayout{}
 class OptionSelectState extends StateLayout{}
 class AddNumberOfOption extends StateLayout{}
 class UploadingStudentAnswerErrorState extends StateLayout{
