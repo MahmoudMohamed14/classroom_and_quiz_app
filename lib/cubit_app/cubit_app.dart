@@ -160,11 +160,12 @@ List<UsersModel>allUser=[];
 }
 List<ClassRoom>myClass=[];
   List<String>myClassId=[];
- void getMyAllClassRoom(){
+  void getMyAllClassRoom(){
    myClass=[];
    myClassId=[];
    emit(GetMyAllClassLoadingState());
-  FirebaseFirestore.instance.collection('users')
+  FirebaseFirestore.instance
+      .collection('users')
       .doc(myEmail)
       .collection('Classrooms')
       .get()
@@ -185,7 +186,7 @@ List<ClassRoom>myClass=[];
 
 
 }
-void deleteClassRoomFromStudent({required String className,String? studentEmail}){
+void deleteClassRoomFromStudent({required String className,String? studentEmail,bool fromOut=false}){
 
   FirebaseFirestore.instance.collection('users')
       .doc(currentUser.isTeacher!?studentEmail:myEmail)
@@ -193,7 +194,8 @@ void deleteClassRoomFromStudent({required String className,String? studentEmail}
       .doc(className)
       .delete()
       .then((value) {
-    getMyAllClassRoom();
+
+    if(!fromOut) getMyAllClassRoom();
         emit(DeleteClassFromStudentSuccessState());
 
 
@@ -203,7 +205,7 @@ void deleteClassRoomFromStudent({required String className,String? studentEmail}
   });
 
 }
-  void deleteStudentToClassRoom({ required String className,required String studentEmail})
+void deleteStudentToClassRoom({ required String className,required String studentEmail})
   {
 
     FirebaseFirestore.instance.collection('Classrooms')
@@ -221,6 +223,42 @@ void deleteClassRoomFromStudent({required String className,String? studentEmail}
     });
 
   }
+  void deleteClass({required String className}){
+//this code is work
+    FirebaseFirestore.instance.collection('Classrooms')
+        .doc(className).collection('Students')
 
-}
+      .snapshots().forEach((element) {
+    for (QueryDocumentSnapshot snapshot in element.docs) {
+      snapshot.reference.delete();
+    }
+  });
+    FirebaseFirestore.instance.collection('Classrooms')
+        .doc(className).collection('posts')
+
+        .snapshots().forEach((element) {
+      for (QueryDocumentSnapshot snapshot in element.docs) {
+        snapshot.reference.delete();
+      }
+    });
+    FirebaseFirestore.instance.collection('Classrooms')
+        .doc(className).collection('quiz')
+
+        .snapshots().forEach((element) {
+      for (QueryDocumentSnapshot snapshot in element.docs) {
+        snapshot.reference.delete();
+      }
+    });
+    FirebaseFirestore.instance.collection('Classrooms')
+        .doc(className).delete();
+
+
+
+
+    }
+
+
+  }
+
+
 

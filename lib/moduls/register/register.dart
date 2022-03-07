@@ -94,55 +94,12 @@ class Register extends StatelessWidget {
 
                     }
                 ),
-                // SizedBox(height: 20,),
-                //   ConditionalBuilder(
-                //     condition: !constIsTeacher!,
-                //     builder:(context)=> defaultEditText(
-                //        control: className,
-                //        textType: TextInputType.text,
-                //        prefIcon: Icons.group,
-                //        label: 'class name',
-                //        validat: (s){
-                //          if(s!.isEmpty){
-                //            return'class name is empty';
-                //          }else if( constIsTeacher!&& listClassName .isNotEmpty){
-                //
-                //            for(int i=0;i<listClassName.length;i++){
-                //              if(s == listClassName[i]){
-                //                isexist=true;
-                //              }
-                //
-                //            }
-                //            return isexist?'already exist try anther classNme ':null;
-                //
-                //
-                //
-                //          }else if(constIsTeacher==false ){
-                //           int counter=0;
-                //
-                //            for(int i=0;i<listClassName.length;i++){
-                //              if(s.toString().trim()== listClassName[i].trim() ){
-                //                counter=1;
-                //              }
-                //
-                //
-                //            }
-                //            return counter==1?null:'not exist ';
-                //
-                //
-                //
-                //          }
-                //          return null;
-                //
-                //        }
-                //  ),
-                //     fallback:(context)=> SizedBox(width: 1,),
-                //   ),
+
                 SizedBox(height: 20,),
 
                 defaultEditText(
                     control: password,
-                    textType: TextInputType.text,
+                    textType: TextInputType.visiblePassword,
                     prefIcon: Icons.lock,
                     label: 'password',
                     validat: (dynamic s){

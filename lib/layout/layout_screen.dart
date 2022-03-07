@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/class_room_model.dart';
+import 'package:quizapp/moduls/classrooms/setting.dart';
 import 'package:quizapp/moduls/people/people.dart';
 import 'package:quizapp/moduls/posts/posts_screen.dart';
+import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 
 class LayoutScreen extends StatelessWidget {
@@ -25,10 +27,7 @@ class LayoutScreen extends StatelessWidget {
         var cubit =CubitLayout.get(context);
         return Scaffold(
           appBar: AppBar(
-
-
             title: Text('MyClass',style: Theme.of(context).textTheme.headline1,),
-
           ),
           body: cubit.listWidget[cubit.index],
           bottomNavigationBar:

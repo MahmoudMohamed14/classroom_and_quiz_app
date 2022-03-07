@@ -155,7 +155,25 @@ class HomeWork extends StatelessWidget {
                 ),
                if(!globalUserModel!.isTeacher!) Icon(CacheHelper.getData(key: quizId!+globalUserModel!.email!)==null?Icons.check_box_outline_blank:Icons.check_box,color: mainColor,)
                 else IconButton(onPressed: (){
-                  CubitLayout.get(context).deleteQuiz(quizId: quizId!);
+                  showDialog(context: context,
+                      builder: (context)=> AlertDialog(
+                       title: Text('Delete Quiz'),
+                        content: Text('Do you want to delete this Quiz ?'),
+                        actions: [
+                          TextButton(onPressed:(){
+                             Navigator.pop(context);
+                          }, child: Text('no')),
+                          TextButton(onPressed: (){
+                            CubitLayout.get(context).deleteQuiz(quizId: quizId!);
+                            Navigator.pop(context);
+                          }, child: Text('yes')),
+
+                        ],
+                      ),
+                    barrierDismissible: false
+
+                  );
+
 
                }, icon: Icon(Icons.delete,color: mainColor,)),
               ],

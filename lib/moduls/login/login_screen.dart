@@ -44,10 +44,13 @@ class LoginScreen extends StatelessWidget {
 
 
 
-            }if(state is LoginErrorState)
+            }
+            if(state is LoginErrorState)
             {
               showToast( state: ToastState.ERROR, text: state.error!);
             }
+
+
 
           },
           builder: (context,state){
@@ -84,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 20,),
                             defaultEditText(control: password,
-                                validat: (dynamic s){
+                                validat: ( s){
                                   if(s.isEmpty){
                                     return'password is Empty';
                                   }
@@ -102,10 +105,8 @@ class LoginScreen extends StatelessWidget {
                                 }
                             ),
                             SizedBox(height: 30,),
-                           defaultButton(
+                         state is LoginLoadingState?Center(child: CircularProgressIndicator()) : defaultButton(
                                 onPress: (){
-
-
                                   if(keyForm.currentState!.validate()){
 
                                       cubit.login(password: password.text, email: email.text);
@@ -116,7 +117,6 @@ class LoginScreen extends StatelessWidget {
 
 
                                   }else{
-
                                   }
                                 },
                                 name: 'LOGIN'),

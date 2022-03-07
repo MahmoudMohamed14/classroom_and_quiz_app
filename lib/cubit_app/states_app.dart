@@ -7,6 +7,13 @@ class ErrorCreateClassState extends StateApp{
   ErrorCreateClassState({this.error});
 
 }
+class LoadingDeleteClassState extends StateApp{}
+class SuccessDeleteClassState extends StateApp{}
+class ErrorDeleteClassState extends StateApp{
+  String ?error;
+  ErrorDeleteClassState({this.error});
+
+}
 class ActionButtonState extends StateApp{}
 class LoadingAddClassToTeacherState extends StateApp{}
 class SuccessAddClassToTeacherState extends StateApp{}

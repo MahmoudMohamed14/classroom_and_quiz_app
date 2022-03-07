@@ -97,7 +97,7 @@ class CubitLayout extends Cubit<StateLayout> {
 
 
 
-  getAllStudent();
+       getAllStudent();
 
 
       emit( ChangeBottomNavState());
@@ -151,12 +151,12 @@ class CubitLayout extends Cubit<StateLayout> {
 
   }
   List<StudentModel> listStudent=[];
-  void getAllStudent(){
+  void getAllStudent({String? className,bool formOut=false}){
     listStudent=[];
     emit(GetStudentLoadingState());
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className!)
+        .doc(formOut?className:classRoomModel!.className!)
         .collection('Students')
         .get()
         .then((value) {
@@ -293,6 +293,8 @@ class CubitLayout extends Cubit<StateLayout> {
 
     });
   }
+
+
 
 
 }

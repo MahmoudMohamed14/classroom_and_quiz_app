@@ -29,6 +29,7 @@ class CreateQuizScreen extends StatelessWidget {
       listener: (context,state){
         if(state is GetQuizSuccessState){
           showToast(text: 'add quiz', state: ToastState.SUCCESS);
+
         }
       },
       builder: (context,state){
@@ -234,12 +235,10 @@ class CreateQuizScreen extends StatelessWidget {
                         option3QuizControl.clear();
                         option4QuizControl.clear();
                         print(cubit.questionList.asMap());
-
-
                       }
 
-                    }, name: 'next',
-                      width: 100
+                    }, name: 'next question',
+
 
                     ),
 

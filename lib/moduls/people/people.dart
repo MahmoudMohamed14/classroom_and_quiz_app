@@ -63,10 +63,24 @@ class PeopleScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text('Students',style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 24),),
-                    Spacer(),
+                    const Spacer(),
+                  InkWell(
+                    onTap: (){ if(CubitApp.get(context) .currentUser.isTeacher!) navigateTo(context, AddStudent());},
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+
+                      child: Icon(Icons.add,color: mainColor,),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: mainColor),
+                        shape: BoxShape.circle
+
+                      ),
+                    ),
+                  )
 
                   ],
                 ),
+                const SizedBox(height: 10,),
                 Container(
                   width: double.infinity,
                   height: 1,
@@ -92,7 +106,7 @@ class PeopleScreen extends StatelessWidget {
   }
   Widget buildStudentItem({context, required StudentModel studentModel})=>InkWell(
     onTap: (){
-    if(CubitApp.get(context) .currentUser.isTeacher!) navigateTo(context, AddStudent());
+
     },
     child: Container(
       padding: EdgeInsetsDirectional.only(top: 10,bottom: 10 ),

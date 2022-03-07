@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -237,6 +239,7 @@ class ClassScreen extends StatelessWidget {
                 Spacer(),
 
                   PopupMenuButton(
+
                     onSelected: (value){
                       switch (value ){
                         case 'edit':{
@@ -244,7 +247,40 @@ class ClassScreen extends StatelessWidget {
                        break;
                         }
                         case 'delete':{
-                          showToast(text: value.toString(), state: ToastState.SUCCESS);
+                          CubitLayout.get(context).getAllStudent(className: model.className,formOut: true);
+
+                          showDialog(context: context,
+                              builder: (context)=> AlertDialog(
+                                title:const Text('Delete ClassRoom'),
+                                content:const Text('Do you want to delete this ClassRoom ?'),
+
+                                actions: [
+                                  TextButton(onPressed:(){
+                                    Navigator.pop(context);
+                                  }, child:const Text('no')),
+                                  TextButton(onPressed: (){
+
+                                  CubitLayout.get(context).listStudent.forEach((element) {
+                                      CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: element.studentEmail);
+
+                                    });
+                                  CubitApp.get(context).deleteClass(className: model.className!);
+
+                                  CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: model.teacherEmail,fromOut: true);
+
+
+
+
+                                  showToast(text: value.toString(), state: ToastState.SUCCESS);
+
+                                    Navigator.pop(context);
+                                  }, child:const Text('yes')),
+
+                                ],
+                              ),
+                              barrierDismissible: false
+
+                          );
                           break;
                         }
                         case 'unenroll':{

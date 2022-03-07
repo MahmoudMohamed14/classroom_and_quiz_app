@@ -9,6 +9,7 @@ Widget defaultButton(
       required Function onPress,
       required String name,
       double width=double.infinity,
+      Color color=mainColor
 
 
 
@@ -16,7 +17,7 @@ Widget defaultButton(
     )=>Container(
   decoration:BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      color: mainColor
+      color: color
 
   ) ,
 

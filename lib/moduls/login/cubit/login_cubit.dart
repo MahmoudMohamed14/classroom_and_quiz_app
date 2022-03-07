@@ -3,6 +3,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizapp/shared/constant/constant.dart';
@@ -29,6 +30,14 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginPasswordState());
 
   }
+  void upDateToken({ String ?token,email}){
+    FirebaseFirestore.instance.collection('token').doc(email).update({'token':token}).then((value) {});
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(email)
+        .update({'token':token}).then((value) {});
+
+  }
 
 
 
@@ -39,12 +48,14 @@ class LoginCubit extends Cubit<LoginState> {
     required String password,
     required String email,
 
-  }){
+  })async{
     emit(LoginLoadingState());
+    var token= await FirebaseMessaging.instance.getToken();
     FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) {
       print(value.user!.email);
       if(CacheHelper.getData(key: 'email')==null)myEmail=email;
       CacheHelper.putData(key: 'email', value: email);
+      upDateToken(email: email,token:token );
 
 
 
