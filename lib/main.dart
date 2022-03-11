@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,10 +12,29 @@ import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/moduls/classrooms/classrooms.dart';
 import 'package:quizapp/moduls/login/login_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
+
+    await Firebase.initializeApp();
+    print(message.notification!.title);
+    if(message.notification!.title=='Add to Class'){
+      print(message.data['addToClaas']);
+     return subscribeToTopic(topicName: message.data['className']);
+
+    } if(message.notification!.title== 'your teacher  delete you'){
+      print(message.data['deleteClass']);
+     return unSubscribeToTopic(topicName: message.data['className']);
+    }
+
+
+
+
+
+}
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +46,19 @@ void main()async {
   print('token= '+token.toString());
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print(message.data.toString());
+
+print(message.notification!.title);
+    if(message.notification!.title=='Add to Class'){
+      print(message.data['addToClaas']);
+   return subscribeToTopic(topicName: message.data['className']);
+      
+    } if(message.notification!.title== 'your teacher  delete you'){
+      print(message.data['deleteClass']);
+    return unSubscribeToTopic(topicName: message.data['className']);
+    }
 
   });
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
 
 

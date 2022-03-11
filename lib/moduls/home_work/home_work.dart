@@ -31,36 +31,37 @@ class HomeWork extends StatelessWidget {
        floatingActionButton: CubitApp.get(context).currentUser.isTeacher!?FloatingActionButton(
 
             onPressed: (){
+              navigateTo(context, CreateQuizScreen());
 
-              if(cubit.isActionOpen) {
-                scaffoldKey.currentState!.showBottomSheet((context) =>
-                    Container(
-                      width: double.infinity,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          defaultTextButton(onPress: () {
-                            Navigator.pop(context);
-                            cubit.actionButtonQuiz(isAction: true);
-
-                            navigateTo(context, CreateQuizScreen());
-
-
-                          }, name: 'Create Quiz')
-
-                        ],
-
-                      ),
-                    ))
-                    .closed.then((value) {
-                  cubit.actionButtonQuiz(isAction: true);
-
-                });
-                cubit.actionButtonQuiz(isAction: false);
-              }else{
-                Navigator.pop(context);
-
-              }
+              // if(cubit.isActionOpen) {
+              //   scaffoldKey.currentState!.showBottomSheet((context) =>
+              //       Container(
+              //         width: double.infinity,
+              //         child: Column(
+              //           mainAxisSize: MainAxisSize.min,
+              //           children: [
+              //             defaultTextButton(onPress: () {
+              //               Navigator.pop(context);
+              //               cubit.actionButtonQuiz(isAction: true);
+              //
+              //               navigateTo(context, CreateQuizScreen());
+              //
+              //
+              //             }, name: 'Create Quiz')
+              //
+              //           ],
+              //
+              //         ),
+              //       ))
+              //       .closed.then((value) {
+              //     cubit.actionButtonQuiz(isAction: true);
+              //
+              //   });
+              //   cubit.actionButtonQuiz(isAction: false);
+              // }else{
+              //   Navigator.pop(context);
+              //
+              // }
             },
             child: Icon(Icons.add,size: 35,),
           ):SizedBox(),
@@ -125,7 +126,9 @@ class HomeWork extends StatelessWidget {
           navigateTo(context, QuizScreen(QuizId: quizId,
             answerList: listOfAnswer,
             correctAnswer: listOfAnswerText,
-            questionList: listOfQuestionText,));
+            questionList: listOfQuestionText,
+            isQuizGame:quizModel.isQuizGame
+          ));
 
         }
 

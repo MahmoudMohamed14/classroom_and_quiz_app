@@ -16,11 +16,12 @@ class QuizScreen extends StatelessWidget {
   List correctAnswer=[];
   int myAnswer=0;
   String ?QuizId;
+ bool ?isQuizGame;
 
 
 
 
-  QuizScreen({required this.answerList, required this.questionList, required this.correctAnswer,this.QuizId});
+  QuizScreen({required this.answerList, required this.questionList, required this.correctAnswer,this.QuizId,this.isQuizGame});
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +150,7 @@ class QuizScreen extends StatelessWidget {
 
   }){
 
-
+    // counterList علشام لو اختار مينفعش يختار تاني
 
     return  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,17 +178,38 @@ class QuizScreen extends StatelessWidget {
           children: [
             InkWell(
               onTap: (){
-                if(CubitLayout.get(context).counterList[index]==0) {
+                if(isQuizGame!){
+                  if(CubitLayout.get(context).counterList[index]==0) {
+                    CubitLayout.get(context).selectOption(option: answerList[0], index: index);
+                    if(CubitLayout.get(context).optionSelectList[index]==answerList[0]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
+                      myAnswer+=1;
+                    }
+
+
+                  }
+                  print('myAnswer = '+myAnswer.toString());
+                  CubitLayout.get(context).counterList[index]=1;
+                }else
+                  {
                   CubitLayout.get(context).selectOption(option: answerList[0], index: index);
-                 if(CubitLayout.get(context).optionSelectList[index]==answerList[0]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
-                   myAnswer+=1;
-                 }
+                  if(CubitLayout.get(context).optionSelectList[index]==answerList[0]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
+                    if( CubitLayout.get(context).counterList[index]==1||CubitLayout.get(context).counterList[index]==2) {
+                      CubitLayout.get(context).counterList[index]=2;
+                    }else{
+                      CubitLayout.get(context).counterList[index]=1;
+                    }
 
-
-                }
+                  }else{
+                    if( CubitLayout.get(context).counterList[index]>0) {
+                      CubitLayout.get(context).counterList[index]=-1;
+                    }else{
+                      CubitLayout.get(context).counterList[index]=0;
+                    }
+                  }
+                 if(CubitLayout.get(context).counterList[index]!=2) myAnswer+=  CubitLayout.get(context).counterList[index];
                   print('myAnswer = '+myAnswer.toString());
 
-                CubitLayout.get(context).counterList[index]=1;
+                }
 
 
 
@@ -200,7 +222,7 @@ class QuizScreen extends StatelessWidget {
 
 
                 decoration: BoxDecoration(
-                  color:   CubitLayout.get(context).optionSelectList[index]==answerList[0]? CubitLayout.get(context).optionSelectList[index]==correctAnswer?Colors.green:Colors.red:Colors.white,
+                  color:   CubitLayout.get(context).optionSelectList[index]==answerList[0]? isQuizGame!?CubitLayout.get(context).optionSelectList[index]==correctAnswer?Colors.green:Colors.red:Colors.blueGrey:Colors.white,
                     border: Border.all(color: mainColor),
                     borderRadius: BorderRadius.circular(20)
 
@@ -217,15 +239,37 @@ class QuizScreen extends StatelessWidget {
             children: [
               InkWell(
                 onTap: (){
-                  if(CubitLayout.get(context).counterList[index]==0) {
+                  // counterList علشام لو اختار مينفعش يختار تاني
+                  if(isQuizGame!){
+                    if(CubitLayout.get(context).counterList[index]==0) {
+                      CubitLayout.get(context).selectOption(option: answerList[1], index: index);
+                      if(CubitLayout.get(context).optionSelectList[index]==answerList[1]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
+                        myAnswer+=1;
+                      }
+
+
+                    }
+                    print('myAnswer = '+myAnswer.toString());
+                    CubitLayout.get(context).counterList[index]=1;
+                  }else{
                     CubitLayout.get(context).selectOption(option: answerList[1], index: index);
                     if(CubitLayout.get(context).optionSelectList[index]==answerList[1]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
-                      myAnswer+=1;
-                    }
+                      if( CubitLayout.get(context).counterList[index]==1||CubitLayout.get(context).counterList[index]==2) {
+                        CubitLayout.get(context).counterList[index]=2;
+                      }else{
+                        CubitLayout.get(context).counterList[index]=1;
+                      }
 
+                    }else{
+                      if( CubitLayout.get(context).counterList[index]>0) {
+                        CubitLayout.get(context).counterList[index]=-1;
+                      }else{
+                        CubitLayout.get(context).counterList[index]=0;
+                      }
+                    }
+                  if(CubitLayout.get(context).counterList[index]!=2)  myAnswer+=  CubitLayout.get(context).counterList[index];
+                    print('myAnswer = '+myAnswer.toString());
                   }
-                print('myAnswer = '+myAnswer.toString());
-                  CubitLayout.get(context).counterList[index]=1;
 
 
                 },
@@ -235,7 +279,7 @@ class QuizScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color:CubitLayout.get(context).optionSelectList[index]==answerList[1]?CubitLayout.get(context).optionSelectList[index]==correctAnswer?Colors.green:Colors.red:Colors.white,
+                    color:CubitLayout.get(context).optionSelectList[index]==answerList[1]?isQuizGame!?CubitLayout.get(context).optionSelectList[index]==correctAnswer?Colors.green:Colors.red:Colors.blueGrey:Colors.white,
                     border: Border.all(color: mainColor),
                     borderRadius: BorderRadius.circular(20)
 
@@ -252,16 +296,42 @@ class QuizScreen extends StatelessWidget {
             children: [
               InkWell(
                 onTap: (){
-                  if(CubitLayout.get(context).counterList[index]==0) {
-                    CubitLayout.get(context).selectOption(option: answerList[2], index: index);
-                    if(CubitLayout.get(context).optionSelectList[index]==answerList[2]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
-                      myAnswer+=1;
-                    }
+                  if(isQuizGame!){
+                    if(CubitLayout.get(context).counterList[index]==0) {
+                      CubitLayout.get(context).selectOption(option: answerList[2], index: index);
+                      if(CubitLayout.get(context).optionSelectList[index]==answerList[2]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
+                        myAnswer+=1;
+                      }
 
+
+                    }
+                    print('myAnswer = '+myAnswer.toString());
+                    CubitLayout.get(context).counterList[index]=1;
+                  }else{
+                    CubitLayout.get(context).selectOption(option: answerList[2], index: index);
+                    if(CubitLayout.get(context).optionSelectList[index]==answerList[2]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)
+                    {
+                      if( CubitLayout.get(context).counterList[index]==1||CubitLayout.get(context).counterList[index]==2) {
+                        CubitLayout.get(context).counterList[index]=2;
+                      }else{
+                        CubitLayout.get(context).counterList[index]=1;
+                      }
+
+
+                    }
+                    else
+                      {
+                      if( CubitLayout.get(context).counterList[index]>0) {
+                        CubitLayout.get(context).counterList[index]=-1;
+                      }else{
+                        CubitLayout.get(context).counterList[index]=0;
+                      }
+                    }
+                   if(CubitLayout.get(context).counterList[index]!=2) myAnswer+=  CubitLayout.get(context).counterList[index];
+                    print('myAnswer = '+myAnswer.toString());
 
                   }
-                  print('myAnswer = '+myAnswer.toString());
-                  CubitLayout.get(context).counterList[index]=1;
+
                 },
               splashColor: mainColor,
 
@@ -269,7 +339,7 @@ class QuizScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color:CubitLayout.get(context).optionSelectList[index]==answerList[2]?CubitLayout.get(context).optionSelectList[index]==correctAnswer?Colors.green:Colors.red:Colors.white,
+                    color:CubitLayout.get(context).optionSelectList[index]==answerList[2]?isQuizGame!?CubitLayout.get(context).optionSelectList[index]==correctAnswer?Colors.green:Colors.red:Colors.blueGrey:Colors.white,
                     border: Border.all(color: mainColor),
                     borderRadius: BorderRadius.circular(20)
 
@@ -284,17 +354,40 @@ class QuizScreen extends StatelessWidget {
         if(answerList[3]!='null')
           InkWell(
             onTap: (){
-              if(CubitLayout.get(context).counterList[index]==0) {
-                CubitLayout.get(context).selectOption(option: answerList[3], index: index);
-                if(CubitLayout.get(context).optionSelectList[index]==answerList[3]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
-                  myAnswer+=1;
+              if(isQuizGame!){
+                if(CubitLayout.get(context).counterList[index]==0) {
+                  CubitLayout.get(context).selectOption(option: answerList[3], index: index);
+                  if(CubitLayout.get(context).optionSelectList[index]==answerList[3]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)  {
+                    myAnswer+=1;
+                  }
+
+
                 }
+                print('myAnswer = '+myAnswer.toString());
+                CubitLayout.get(context).counterList[index]=1;
+              }else{
+                CubitLayout.get(context).selectOption(option: answerList[3], index: index);
+                if(CubitLayout.get(context).optionSelectList[index]==answerList[3]&&CubitLayout.get(context).optionSelectList[index]==correctAnswer)
+                {
+
+                  if( CubitLayout.get(context).counterList[index]==1|| CubitLayout.get(context).counterList[index]==2) {
+                    CubitLayout.get(context).counterList[index]=2;
+                  }else{
+                    CubitLayout.get(context).counterList[index]=1;
+                  }
+
+                }else{
+                  if( CubitLayout.get(context).counterList[index]>0) {
+                    CubitLayout.get(context).counterList[index]=-1;
+                  }else{
+                    CubitLayout.get(context).counterList[index]=0;
+                  }
+
+                }
+               if( CubitLayout.get(context).counterList[index]!=2)  myAnswer+=  CubitLayout.get(context).counterList[index];
+                print('myAnswer = '+myAnswer.toString());
 
               }
-
-              print('myAnswer = '+myAnswer.toString());
-              CubitLayout.get(context).counterList[index]=1;
-
             },
           splashColor: mainColor,
 
@@ -302,7 +395,7 @@ class QuizScreen extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             width: double.infinity,
             decoration: BoxDecoration(
-                color: CubitLayout.get(context).optionSelectList[index]==answerList[3]?CubitLayout.get(context).optionSelectList[index]==correctAnswer?Colors.green:Colors.red:Colors.white,
+                color: CubitLayout.get(context).optionSelectList[index]==answerList[3]?isQuizGame!?CubitLayout.get(context).optionSelectList[index]==correctAnswer?Colors.green:Colors.red:Colors.blueGrey:Colors.white,
                 border: Border.all(color: mainColor),
                 borderRadius: BorderRadius.circular(20)
 

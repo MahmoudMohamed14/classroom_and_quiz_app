@@ -8,7 +8,10 @@ import 'package:quizapp/cubit_app/states_app.dart';
 import 'package:quizapp/models/class_room_model.dart';
 import 'package:quizapp/models/student_model.dart';
 import 'package:quizapp/models/users_model.dart';
+import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/network/local/cache_helper.dart';
+import 'package:quizapp/shared/network/remotely/dio_helper.dart';
 
 class CubitApp extends Cubit<StateApp> {
   CubitApp() : super(InitAppState());
@@ -28,6 +31,8 @@ class CubitApp extends Cubit<StateApp> {
         .set(classRoom.toMap()).then((value)  {
       addClassRoomToTeacherAndCurrentUser(classRoom.toMap());
       getClassName();
+      subscribeToTopic(topicName: classRoom.className!);
+
 
 
       emit(SuccessCreateClassState());
@@ -186,7 +191,7 @@ List<ClassRoom>myClass=[];
 
 
 }
-void deleteClassRoomFromStudent({required String className,String? studentEmail,bool fromOut=false}){
+void deleteClassRoomFromStudent({required String className,String? studentEmail,}){
 
   FirebaseFirestore.instance.collection('users')
       .doc(currentUser.isTeacher!?studentEmail:myEmail)
@@ -195,7 +200,7 @@ void deleteClassRoomFromStudent({required String className,String? studentEmail,
       .delete()
       .then((value) {
 
-    if(!fromOut) getMyAllClassRoom();
+    getMyAllClassRoom();
         emit(DeleteClassFromStudentSuccessState());
 
 
@@ -247,10 +252,18 @@ void deleteStudentToClassRoom({ required String className,required String studen
         .snapshots().forEach((element) {
       for (QueryDocumentSnapshot snapshot in element.docs) {
         snapshot.reference.delete();
+        snapshot.reference.collection('studentAnswer').snapshots().forEach((element) {
+          for (QueryDocumentSnapshot snapshot in element.docs) {
+            snapshot.reference.delete();
+          }
+        });
+        
       }
     });
     FirebaseFirestore.instance.collection('Classrooms')
-        .doc(className).delete();
+        .doc(className).delete().then((value) {
+
+    });
 
 
 

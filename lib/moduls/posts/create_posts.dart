@@ -15,7 +15,7 @@ class CreatePost extends StatelessWidget {
     return BlocConsumer<CubitLayout,StateLayout>(
       listener: (context,state){
         if(state is CreatePostSuccessState) {
-          DioHelper.postNotification();
+
           Navigator.pop(context);
         }
 

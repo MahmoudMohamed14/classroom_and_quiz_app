@@ -7,6 +7,7 @@ import 'package:quizapp/models/question_model.dart';
 import 'package:quizapp/models/quiz_model.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/network/remotely/dio_helper.dart';
 
 class CreateQuizScreen extends StatelessWidget {
   TextEditingController titleQuizControl=  TextEditingController();
@@ -29,6 +30,13 @@ class CreateQuizScreen extends StatelessWidget {
       listener: (context,state){
         if(state is GetQuizSuccessState){
           showToast(text: 'add quiz', state: ToastState.SUCCESS);
+          DioHelper.postNotification(to: '/topics/${CubitLayout.get(context).classRoomModel!.className!}',
+              title: CubitLayout.get(context).classRoomModel!.className!,
+              body: '${globalUserModel!.name} create new quiz',
+              data: {'addToClaas':'false','deleteClass':'false','className':'', "type": "order",
+                "id": "87",
+                "click_action": "FLUTTER_NOTIFICATION_CLICK"}
+          );
 
         }
       },
@@ -61,7 +69,8 @@ class CreateQuizScreen extends StatelessWidget {
               title: titleQuizControl.text,
               date: dateQuizControl.text,
               time: timeQuizControl.text,
-              questionMap: questionMap
+              questionMap: questionMap,
+              isQuizGame: cubit.isQuizGame
           );
          cubit.uploadQuiz(quizModel:quizModel,context: context );
           print(quizModel.questionMap);
@@ -158,6 +167,32 @@ class CreateQuizScreen extends StatelessWidget {
                         DropdownMenuItem<bool>(child: Text('Multiple Choice',),value: true,),
                         DropdownMenuItem<bool>(child: Text('True and False '),value: false,),
                       ]
+                      ),
+                    ),
+                    const SizedBox(height: 20,),
+                    Container(
+                      padding:const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: mainColor)
+
+                      ),
+                      child: DropdownButton(
+
+                          isExpanded: true,
+                          iconSize: 36,
+                          value: cubit.isQuizGame,
+                          onChanged: ( s){
+                            cubit.dropDownBottonQuizGame(isQuiz: s);
+                            print(cubit.isQuizGame);
+                          },
+
+                          items:const[
+                            DropdownMenuItem<bool>(child: Text('Normal',),value: false,),
+                            DropdownMenuItem<bool>(child: Text('Quiz Game '),value: true,),
+                          ]
                       ),
                     ),
                    const SizedBox(height: 20,),

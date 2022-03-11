@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,6 +12,7 @@ import 'package:quizapp/models/student_model.dart';
 import 'package:quizapp/moduls/people/addstudent.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/network/remotely/dio_helper.dart';
 
 class PeopleScreen extends StatelessWidget {
 
@@ -64,8 +67,8 @@ class PeopleScreen extends StatelessWidget {
                   children: [
                     Text('Students',style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 24),),
                     const Spacer(),
-                  InkWell(
-                    onTap: (){ if(CubitApp.get(context) .currentUser.isTeacher!) navigateTo(context, AddStudent());},
+                    if(CubitApp.get(context) .currentUser.isTeacher!)    InkWell(
+                    onTap: (){ navigateTo(context, AddStudent());},
                     child: Container(
                       padding: EdgeInsets.all(7),
 
@@ -131,10 +134,25 @@ class PeopleScreen extends StatelessWidget {
          padding: EdgeInsets.all(0),
        onSelected: (value){
          if(value=='delete'){
-           CubitApp.get(context).deleteClassRoomFromStudent(className: CubitLayout.get(context).classRoomModel!.className!,studentEmail: studentModel.studentEmail!);
-          CubitApp.get(context).deleteStudentToClassRoom(className:CubitLayout.get(context).classRoomModel!.className!,studentEmail: studentModel.studentEmail!);
 
+           CubitApp.get(context).deleteClassRoomFromStudent(className: CubitLayout.get(context).classRoomModel!.className!,studentEmail: studentModel.studentEmail!);
+
+           CubitApp.get(context).deleteStudentToClassRoom(className:CubitLayout.get(context).classRoomModel!.className!,studentEmail: studentModel.studentEmail!);
            CubitLayout.get(context).getAllStudent();
+           CubitApp.get(context).allUser.forEach((element) {
+             if(studentModel.studentEmail==element.email){
+               DioHelper.postNotification(to: element.token!,
+                   title: CubitLayout.get(context).classRoomModel!.className!,
+                   body: 'your teacher  delete you',
+                   data: { "type": "order",
+                     "id": "87",
+                     'addToClaas':'false',
+                     "click_action": "FLUTTER_NOTIFICATION_CLICK",'className':CubitLayout.get(context).classRoomModel!.className!,'deleteClass':'true'});
+             }
+           });
+
+
+
          }
        },
 
@@ -144,9 +162,6 @@ class PeopleScreen extends StatelessWidget {
                 return deletePost.map(( String e) {
                   return PopupMenuItem<String>(
                     height: 20,
-
-
-
                       value: e,
                       child:Text(e)
                   );

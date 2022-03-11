@@ -11,17 +11,14 @@ import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/layout_screen.dart';
 import 'package:quizapp/models/class_room_model.dart';
 import 'package:quizapp/models/menu_class_model.dart';
+import 'package:quizapp/moduls/classrooms/create_classroom.dart';
+import 'package:quizapp/moduls/home_work/create_quiz.dart';
 import 'package:quizapp/moduls/login/login_screen.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/network/remotely/dio_helper.dart';
 
 class ClassScreen extends StatelessWidget {
-  var scaffoldKey=GlobalKey<ScaffoldState>();
-  var formKey=GlobalKey<FormState>();
-  var classNameController=TextEditingController();
-  var subjectController=TextEditingController();
-
-
   @override
   Widget build(BuildContext context) {
 
@@ -29,46 +26,45 @@ class ClassScreen extends StatelessWidget {
       listener: (context,state)
       {
 
-        if(state is SuccessCreateClassState){
-          Navigator.pop(context);
-          showToast(text: 'Class Created Successfully', state: ToastState.SUCCESS);
-
-        }else if(state is GetClassSuccessState){
-          Navigator.pop(context);
-        }
-        else if(state is AddStudentToClassSuccessState){
-          showToast(text: 'Add Student To Class Successfully', state: ToastState.SUCCESS);
-        }
-        else if(state is AddStudentToClassErrorState){
-          showToast(text: state.error!, state: ToastState.ERROR);
-
-        }else if(state is GetClassErrorState){
-          showToast(text: state.error!, state: ToastState.ERROR);
-
-        }else if(state is ErrorAddClassToTeacherState){
-          showToast(text: state.error!, state: ToastState.ERROR);
-
-        }else if(state is ErrorCreateClassState){
-          showToast(text: state.error!, state: ToastState.ERROR);
-
-        }
+        // if(state is SuccessCreateClassState){
+        //
+        //   Navigator.pop(context);
+        //   showToast(text: 'Class Created Successfully', state: ToastState.SUCCESS);
+        //
+        // }else if(state is GetClassSuccessState){
+        //   Navigator.pop(context);
+        //  }
+        // else if(state is AddStudentToClassSuccessState){
+        //   showToast(text: 'Add Student To Class Successfully', state: ToastState.SUCCESS);
+        //
+        // }
+        // else if(state is AddStudentToClassErrorState){
+        //   showToast(text: state.error!, state: ToastState.ERROR);
+        //
+        // }else if(state is GetClassErrorState){
+        //   showToast(text: state.error!, state: ToastState.ERROR);
+        //
+        // }else if(state is ErrorAddClassToTeacherState){
+        //   showToast(text: state.error!, state: ToastState.ERROR);
+        //
+        // }else if(state is ErrorCreateClassState){
+        //   showToast(text: state.error!, state: ToastState.ERROR);
+        //
+        // }
       },
       builder:(context,state){
         var cubit=CubitApp.get(context);
         return Scaffold(
-        key: scaffoldKey,
+
         appBar: AppBar(
           leading: SizedBox(),
 
           leadingWidth: 10,
           actions: [
             IconButton(onPressed: (){
-              if(!cubit.isActionOpen){
-                cubit.actionButton(isAction: true);
+
                 signOut(context,LoginScreen());
-              }else{
-                signOut(context,LoginScreen());
-              }
+
 
 
             }, icon: Icon(Icons.logout))
@@ -77,112 +73,8 @@ class ClassScreen extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: (){
-            print('test is obin ${cubit.isActionOpen}');
+            navigateTo(context, CreateClassScreen());
 
-
-               if(cubit.isActionOpen)
-
-            {
-
-              scaffoldKey.currentState!.showBottomSheet((context) => Container(
-
-                    color: Colors.grey[100],
-                    padding: EdgeInsets.all(20),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-
-                          defaultEditText(control: classNameController, label: 'classrooms name',
-                              validat: (s) {
-                            if(s!.isEmpty)
-                            {
-                              return'classrooms name is empty';
-                            }
-                            else if (cubit.myClass.isNotEmpty && !cubit.currentUser.isTeacher!)
-                            {
-                              int counterMyClassName =0;
-
-
-                              for(int i=0;i<cubit.myClass.length;i++) {
-                                if (s == cubit.myClass[i].className) {
-                                  counterMyClassName =1;
-                                }
-                              }
-                              return counterMyClassName == 1 ? ' you are already joined ' : null;
-
-                            }
-                            else if(cubit.currentUser.isTeacher! && listClassName .isNotEmpty)
-                            {
-                              int counterTeacher=0;
-
-                              for(int i=0;i<listClassName.length;i++){
-                                if(s == listClassName[i]){
-                                  counterTeacher=1;
-                                }
-
-                              }
-                              return counterTeacher==1?'already exist try anther classNme ':null;
-
-
-
-                            }
-                            else if(!cubit.currentUser.isTeacher! )
-                            {
-
-                              int counterStudent=0;
-
-                              for(int i=0;i<listClassName.length;i++){
-                                if(s.toString().trim()== listClassName[i].trim() ) {
-                                  counterStudent=1;
-                                }
-
-
-                              }
-                              return counterStudent==1?null:'not exist ';
-
-                            }
-
-                            return null;
-
-                          }
-                          ),
-                          cubit.currentUser.isTeacher!?  Column(
-                            children: [
-                              SizedBox(height: 20,),
-
-                              defaultEditText(control: subjectController, label: 'subject', validat: (s){
-                                if(s!.isEmpty && cubit.currentUser.isTeacher!){
-                                  return'subject is empty';
-                                }
-                                return null;
-                              }),
-                            ],
-                          ):SizedBox(),
-
-                        ],
-                      ),
-                    ),
-                  )).closed.then((value) {
-                classNameController.clear();
-                subjectController.clear();
-                cubit.actionButton(isAction: true);
-                print(cubit.isActionOpen);
-
-              });
-              cubit.actionButton(isAction: false);
-              print(cubit.isActionOpen);
-            }
-               else
-               {
-                 if(formKey.currentState!.validate()){
-                   cubit.currentUser.isTeacher!? cubit.createClass(classRoom: ClassRoom(className: classNameController.text, subject: subjectController.text, teacherEmail: cubit.currentUser.email, teacherName: cubit.currentUser.name,)):cubit.getClass(className: classNameController.text);
-                   cubit.actionButton(isAction: true);
-
-                   print(cubit.isActionOpen);
-                 }
-               }
           },
           child: Icon(Icons.add,size: 35,),
 
@@ -265,8 +157,12 @@ class ClassScreen extends StatelessWidget {
 
                                     });
                                   CubitApp.get(context).deleteClass(className: model.className!);
+                                  DioHelper.postNotification(to: '/topics/${model.className!}',
+                                      title: model.className!,
+                                      body: 'you teacher has delete this class',
+                                      data: {'className':model.className!,'deleteClass':'true','addToClaas':'false'});
+                                  CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: model.teacherEmail,);
 
-                                  CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: model.teacherEmail,fromOut: true);
 
 
 
@@ -286,6 +182,7 @@ class ClassScreen extends StatelessWidget {
                         case 'unenroll':{
                           CubitApp.get(context).deleteStudentToClassRoom(className:model.className!,studentEmail: myEmail!);
                           CubitApp.get(context).deleteClassRoomFromStudent(className:model.className! );
+                             unSubscribeToTopic(topicName: model.className!);
 
                           showToast(text: value.toString(), state: ToastState.SUCCESS);
 

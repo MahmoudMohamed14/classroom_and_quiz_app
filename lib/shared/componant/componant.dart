@@ -1,9 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
 
+void subscribeToTopic({required String topicName}){
+    FirebaseMessaging.instance.subscribeToTopic(topicName).then((value) {
+      print('subscribeFromTopic success');
+    }).catchError((onError){
+      print(onError.toString());
+    });
+}
+void unSubscribeToTopic({required String topicName}){
+   FirebaseMessaging.instance.unsubscribeFromTopic(topicName).then((value) {
+     print('unsubscribeFromTopic success');
+   }).catchError((onError){
+     print(onError.toString());
+   });
+}
 Widget defaultButton(
     {
       required Function onPress,

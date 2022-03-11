@@ -15,9 +15,6 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitState());
   // LoginModel? loginModel;
   bool isScure=true;
-
-
-
   IconData suffix=Icons.visibility;
   static LoginCubit get(context){
     return BlocProvider.of(context);
@@ -38,13 +35,7 @@ class LoginCubit extends Cubit<LoginState> {
         .update({'token':token}).then((value) {});
 
   }
-
-
-
-
-
   void login({
-
     required String password,
     required String email,
 
@@ -68,8 +59,6 @@ class LoginCubit extends Cubit<LoginState> {
 
 
   }
-
-
   // void getClassName(){
   //   listClassName=[];
   //   FirebaseFirestore.instance.collection('className').get()
@@ -89,10 +78,5 @@ class LoginCubit extends Cubit<LoginState> {
   //   });
   //
   // }
-
-
-
-
-
 
 }

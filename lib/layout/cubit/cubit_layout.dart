@@ -16,6 +16,7 @@ import 'package:quizapp/moduls/home_work/home_work.dart';
 import 'package:quizapp/moduls/people/people.dart';
 import 'package:quizapp/moduls/posts/posts_screen.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/network/remotely/dio_helper.dart';
 
 class CubitLayout extends Cubit<StateLayout> {
 
@@ -29,6 +30,7 @@ class CubitLayout extends Cubit<StateLayout> {
   List<Map<String,dynamic>> questionList=[];
   bool isActionOpen=true;
   bool isMulitpleChoice=true;
+  bool isQuizGame=false;
   void  changeBottomNavForQuiz({required int index})
   {
 
@@ -51,6 +53,10 @@ class CubitLayout extends Cubit<StateLayout> {
   }
   void dropDownBotton({ ischoice}){
     isMulitpleChoice=ischoice;
+    emit(DropDownButtonState ());
+  }
+  void dropDownBottonQuizGame({ isQuiz}){
+    isQuizGame=isQuiz;
     emit(DropDownButtonState ());
   }
   void actionButtonQuiz({required bool isAction}){
@@ -117,6 +123,13 @@ class CubitLayout extends Cubit<StateLayout> {
         .doc(classRoomModel!.className!)
         .collection('posts').add(Postmodel.toMap()).then((value) {
            getPost();
+           DioHelper.postNotification(to: '/topics/${classRoomModel!.className!}',
+               title: classRoomModel!.className!,
+               body: '${globalUserModel!.name} post in class',
+             data: {'addToClaas':'false','deleteClass':'false','className':'', "type": "order",
+               "id": "87",
+               "click_action": "FLUTTER_NOTIFICATION_CLICK"}
+               );
           emit(CreatePostSuccessState());
 
     }).catchError((onError){
@@ -278,11 +291,21 @@ class CubitLayout extends Cubit<StateLayout> {
   }
   void deleteQuiz({required String quizId}){
 
+
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.className)
         .collection('quiz')
         .doc(quizId).delete().then((value) {
+      FirebaseFirestore.instance
+          .collection('Classrooms')
+          .doc(classRoomModel!.className)
+          .collection('quiz')
+          .doc(quizId).collection('studentAnswer').snapshots().forEach((element) {
+        for (QueryDocumentSnapshot snapshot in element.docs) {
+          snapshot.reference.delete();
+        }
+      });
       emit(DeleteQuizSuccessState());
 
 
@@ -292,6 +315,16 @@ class CubitLayout extends Cubit<StateLayout> {
       print('Delete error her'+onError.toString());
 
     });
+  }
+  String? token;
+  void getToken({required String email}){
+
+    FirebaseFirestore.instance.collection('token').doc(email).get().then((value) {
+      token=value.data()!['token'];
+      emit(GetTokenSuccessState());
+
+    });
+
   }
 
 

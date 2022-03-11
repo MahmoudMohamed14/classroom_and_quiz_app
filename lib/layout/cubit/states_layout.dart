@@ -63,3 +63,4 @@ class GetStudentAnswerErrorState extends StateLayout{
   GetStudentAnswerErrorState({this.error});
 }
 class GetStudentAnswerSuccessState extends StateLayout{}
+class GetTokenSuccessState extends StateLayout{}

@@ -5,6 +5,7 @@ class QuestionModel{
   String ?optoin3;
   String ?optoin4;
 
+
   QuestionModel({this.question, this.optoin1, this.optoin2, this.optoin3, this.optoin4});
   QuestionModel.fromJson({required Map<String,dynamic> json}){
     question=json['question'];

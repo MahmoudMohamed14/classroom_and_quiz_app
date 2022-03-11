@@ -15,13 +15,19 @@ class DioHelper{
       )
     );
   }
-  static Future<Response> postNotification() async{
+  static Future<Response> postNotification({
+  required String to,
+    required String title,
+    required String body,
+    Map<String,dynamic>?data
+
+}) async{
     return await dio.post('fcm/send',
       data: {
-        "to": 'd5Xbz0YoRnq6p-7iRAO__q:APA91bE7mSZCAYb8dIZ_u1-6xsVGjsqXdIvUlfg7QeaAcLeJ8H64YcdshOj8MY8I-hLwr57zE-RgY20ryyt3uRYYV6cBGD40b3_1kPNd7_vDxKKpr0lF7HRaLOp4ZoeH2bbeZBD-66PE',
+        "to": to,
         "notification": {
-          "title": "message from mahmoud",
-          "body": "testing body from post man",
+          "title": title,
+          "body": body,
           "sound": "default",
 
 
@@ -37,11 +43,7 @@ class DioHelper{
             "default_light_settings": true
           }
         },
-        "data": {
-
-          "test": "test"
-
-        }
+        "data": data
       }
     );
   }
