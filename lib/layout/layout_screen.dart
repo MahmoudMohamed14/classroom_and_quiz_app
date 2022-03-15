@@ -10,6 +10,7 @@ import 'package:quizapp/moduls/people/people.dart';
 import 'package:quizapp/moduls/posts/posts_screen.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class LayoutScreen extends StatelessWidget {
 
@@ -27,7 +28,7 @@ class LayoutScreen extends StatelessWidget {
         var cubit =CubitLayout.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text('MyClass',style: Theme.of(context).textTheme.headline1,),
+            title: Text(cubit.titleList(context)[cubit.index],style: Theme.of(context).textTheme.headline1,),
           ),
           body: cubit.listWidget[cubit.index],
           bottomNavigationBar:
@@ -38,9 +39,9 @@ class LayoutScreen extends StatelessWidget {
 
             },
               items:  [
-          BottomNavigationBarItem(icon:Icon(Icons.chat),label: 'Posts'),
-          BottomNavigationBarItem(icon:Icon(Icons.work),label: 'HomeWork'),
-          BottomNavigationBarItem(icon:Icon(Icons.people),label: 'Peoole'),
+          BottomNavigationBarItem(icon:Icon(Icons.chat),label: '${getLang(context, "posts")}'),
+          BottomNavigationBarItem(icon:Icon(Icons.work),label: '${getLang(context, "quiz_name")}'),
+          BottomNavigationBarItem(icon:Icon(Icons.people),label: '${getLang(context, "member")}'),
               ],
           ),
 

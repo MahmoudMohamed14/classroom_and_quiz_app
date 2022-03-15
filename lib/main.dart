@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:quizapp/bloc_observer.dart';
 import 'package:quizapp/cubit_app/cubit_app.dart';
@@ -16,6 +17,7 @@ import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 
@@ -59,9 +61,6 @@ print(message.notification!.title);
 
   });
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
-
-
 
   if(CacheHelper.getData(key: 'email')!=null) {
     myEmail = CacheHelper.getData(key: 'email');
@@ -139,6 +138,29 @@ class MyApp extends StatelessWidget {
 
                    ),
                  ),
+                 supportedLocales:const [
+                   Locale('en',),
+                   Locale('ar'),
+                 ],
+
+                 localizationsDelegates: const[
+                   AppLocale.delegate,
+                 GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                   GlobalCupertinoLocalizations.delegate,
+
+                 ],
+                 localeResolutionCallback: (currentLang,supportedLang){
+                   if(currentLang!=null){
+                     for(Locale local in supportedLang){
+                       if(local.languageCode==currentLang.languageCode){
+                         return currentLang;
+                       }
+                     }
+
+                   }
+                   return supportedLang.first;
+                 },
                  home:firstScreen(iscurrentuser:FirebaseAuth.instance.currentUser!=null,context: context ),
                );
              },

@@ -15,6 +15,7 @@ import 'package:quizapp/moduls/register/register.dart';
 
 
 import 'package:quizapp/shared/componant/componant.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -67,7 +68,7 @@ class LoginScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('LOGIN',
+                            Text('${getLang(context, "login_name")}',
                               style:Theme.of(context).textTheme.headline3!.copyWith(color: Colors.black),
                             ),
                             SizedBox(height: 10,),
@@ -77,11 +78,11 @@ class LoginScreen extends StatelessWidget {
                                 control: email,
                                 validat: ( s){
                                   if(s!.isEmpty){
-                                    return'Email is Empty';
+                                    return'${getLang(context, "email_empty")}';
                                   }
                                   return null;
                                 },
-                                label: 'Email',
+                                label: '${getLang(context, "email_name")}',
                                 prefIcon: Icons.email_outlined,
                                 textType: TextInputType.emailAddress
                             ),
@@ -89,14 +90,14 @@ class LoginScreen extends StatelessWidget {
                             defaultEditText(control: password,
                                 validat: ( s){
                                   if(s.isEmpty){
-                                    return'password is Empty';
+                                    return'${getLang(context, "password_empty")}';
                                   }
                                   return null;
                                 },
                                 textType:TextInputType.visiblePassword,
                                 enable: cubit.isScure,
                                 sufIcon: cubit.suffix,
-                                label: 'Password',
+                                label: '${getLang(context, "password_name")}',
 
                                 prefIcon: Icons.lock,
                                 onPressSuffix: (){
@@ -119,12 +120,12 @@ class LoginScreen extends StatelessWidget {
                                   }else{
                                   }
                                 },
-                                name: 'LOGIN'),
+                                name: '${getLang(context, "login_name")}'),
                             SizedBox(height: 15,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Don\'t have account?'),
+                                Text('${getLang(context, "noHaveAccount_name")}'),
                                 defaultTextButton(onPress: (){
 
                                   //  cubit.getClassName();
@@ -133,7 +134,7 @@ class LoginScreen extends StatelessWidget {
 
 
 
-                                }, name: 'Register')
+                                }, name: '${getLang(context, "register_name")}')
                               ],),
 
 

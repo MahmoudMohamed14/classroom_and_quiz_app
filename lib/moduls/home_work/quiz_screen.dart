@@ -9,6 +9,7 @@ import 'package:quizapp/models/answer_student_model.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class QuizScreen extends StatelessWidget {
   List answerList=[];
@@ -47,9 +48,9 @@ class QuizScreen extends StatelessWidget {
              cubit. changeBottomNavForQuiz(index: index);
 
             },
-            items:  const  [
-              BottomNavigationBarItem(icon:Icon(Icons.quiz_outlined),label: 'Quiz'),
-              BottomNavigationBarItem(icon:Icon(Icons.question_answer_outlined),label: 'StudentAnswer'),
+            items:   [
+              BottomNavigationBarItem(icon:Icon(Icons.quiz_outlined),label: '${getLang(context, "quiz")}'),
+              BottomNavigationBarItem(icon:Icon(Icons.question_answer_outlined),label:  '${getLang(context, "student_answer")}'),
 
             ],
           ):SizedBox(),
@@ -101,7 +102,7 @@ class QuizScreen extends StatelessWidget {
             separatorBuilder: (context,index)=>const SizedBox(height: 20,),
             itemCount:CubitLayout.get(context).listAnswerStudentModel.length),
       ),
-      fallback: (context)=> const Center(
+      fallback: (context)=>  const Center(
         child: CircularProgressIndicator(),
       ));
   Widget answerStudentBuildItem({context,required AnswerStudentModel answerModel}) {
@@ -121,7 +122,7 @@ class QuizScreen extends StatelessWidget {
 
             children: [
               Expanded(child: Padding(
-                padding: const EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.only(left: 20,right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

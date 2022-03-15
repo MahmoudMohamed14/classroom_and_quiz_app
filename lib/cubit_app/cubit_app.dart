@@ -27,18 +27,21 @@ class CubitApp extends Cubit<StateApp> {
   void createClass({required ClassRoom classRoom}){
     emit(LoadingCreateClassState());
     FirebaseFirestore.instance.collection('Classrooms')
-        .doc(classRoom.className)
+        .doc(classRoom.code)
         .set(classRoom.toMap()).then((value)  {
+
       addClassRoomToTeacherAndCurrentUser(classRoom.toMap());
       getClassName();
-      subscribeToTopic(topicName: classRoom.className!);
+
+      subscribeToTopic(topicName: classRoom.code!);
 
 
 
       emit(SuccessCreateClassState());
 
     }).catchError((onError){
-      emit(ErrorCreateClassState(error: onError));
+      emit(ErrorCreateClassState(error: onError.toString()));
+      print(onError.toString());
     });
   }
   void actionButton({required bool isAction}){
@@ -51,9 +54,9 @@ emit(AddStudentToClassLoadingState());
  FirebaseFirestore.instance.collection('users')
     .doc(isteacher ?studentEmail:myEmail)
     .collection('Classrooms')
-     .doc(map['className']).set(map).then((value)  {
+     .doc(map['code']).set(map).then((value)  {
  if(!currentUser.isTeacher!||isteacher){
-   addStudentToClassRoom(className: map['className'],studentEmail:isteacher ?studentEmail!:currentUser.email!,studentName: isteacher ?studentName!:currentUser.name!);
+   addStudentToClassRoom(code: map['code'],studentEmail:isteacher ?studentEmail!:currentUser.email!,studentName: isteacher ?studentName!:currentUser.name!);
 
  }else{
    getMyAllClassRoom();
@@ -123,10 +126,10 @@ List<UsersModel>allUser=[];
     });
   }
 
-  void getClass({required String className}){
-  FirebaseFirestore.instance
+  void getClass({required String code}){
+   FirebaseFirestore.instance
       .collection('Classrooms')
-      .doc(className)
+      .doc(code)
       .get()
       .then((value) {
   if(!currentUser.isTeacher!)  {
@@ -143,12 +146,12 @@ List<UsersModel>allUser=[];
   });
 
 }
-  void addStudentToClassRoom({ required String className,required String studentName,required String studentEmail})
+  void addStudentToClassRoom({required String code,required String studentName,required String studentEmail})
    {
      StudentModel studentModel= StudentModel(studentEmail: studentEmail,studentName: studentName);
 
   FirebaseFirestore.instance.collection('Classrooms')
-      .doc(className)
+      .doc(code)
       .collection('Students')
       .doc(studentEmail)
       .set(studentModel.toMap())
@@ -191,12 +194,12 @@ List<ClassRoom>myClass=[];
 
 
 }
-void deleteClassRoomFromStudent({required String className,String? studentEmail,}){
+void deleteClassRoomFromStudent({required String code,String? studentEmail,}){
 
   FirebaseFirestore.instance.collection('users')
       .doc(currentUser.isTeacher!?studentEmail:myEmail)
       .collection('Classrooms')
-      .doc(className)
+      .doc(code)
       .delete()
       .then((value) {
 
@@ -210,11 +213,11 @@ void deleteClassRoomFromStudent({required String className,String? studentEmail,
   });
 
 }
-void deleteStudentToClassRoom({ required String className,required String studentEmail})
+void deleteStudentToClassRoom({ required String code,required String studentEmail})
   {
 
     FirebaseFirestore.instance.collection('Classrooms')
-        .doc(className)
+        .doc(code)
         .collection('Students')
         .doc(studentEmail)
         .delete()
@@ -228,10 +231,10 @@ void deleteStudentToClassRoom({ required String className,required String studen
     });
 
   }
-  void deleteClass({required String className}){
+  void deleteClass({required String code}){
 //this code is work
     FirebaseFirestore.instance.collection('Classrooms')
-        .doc(className).collection('Students')
+        .doc(code).collection('Students')
 
       .snapshots().forEach((element) {
     for (QueryDocumentSnapshot snapshot in element.docs) {
@@ -239,7 +242,7 @@ void deleteStudentToClassRoom({ required String className,required String studen
     }
   });
     FirebaseFirestore.instance.collection('Classrooms')
-        .doc(className).collection('posts')
+        .doc(code).collection('posts')
 
         .snapshots().forEach((element) {
       for (QueryDocumentSnapshot snapshot in element.docs) {
@@ -247,7 +250,7 @@ void deleteStudentToClassRoom({ required String className,required String studen
       }
     });
     FirebaseFirestore.instance.collection('Classrooms')
-        .doc(className).collection('quiz')
+        .doc(code).collection('quiz')
 
         .snapshots().forEach((element) {
       for (QueryDocumentSnapshot snapshot in element.docs) {
@@ -261,7 +264,7 @@ void deleteStudentToClassRoom({ required String className,required String studen
       }
     });
     FirebaseFirestore.instance.collection('Classrooms')
-        .doc(className).delete().then((value) {
+        .doc(code).delete().then((value) {
 
     });
 
@@ -269,6 +272,14 @@ void deleteStudentToClassRoom({ required String className,required String studen
 
 
     }
+
+
+  String getRandomString(int length) {
+    const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random _rnd = Random();
+  return String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  }
 
 
   }

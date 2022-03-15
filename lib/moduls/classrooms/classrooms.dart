@@ -136,53 +136,55 @@ class ClassScreen extends StatelessWidget {
                       switch (value ){
                         case 'edit':{
                           showToast(text: value.toString(), state: ToastState.SUCCESS);
+
                        break;
                         }
                         case 'delete':{
-                          CubitLayout.get(context).getAllStudent(className: model.className,formOut: true);
-
-                          showDialog(context: context,
-                              builder: (context)=> AlertDialog(
-                                title:const Text('Delete ClassRoom'),
-                                content:const Text('Do you want to delete this ClassRoom ?'),
-
-                                actions: [
-                                  TextButton(onPressed:(){
-                                    Navigator.pop(context);
-                                  }, child:const Text('no')),
-                                  TextButton(onPressed: (){
-
-                                  CubitLayout.get(context).listStudent.forEach((element) {
-                                      CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: element.studentEmail);
-
-                                    });
-                                  CubitApp.get(context).deleteClass(className: model.className!);
-                                  DioHelper.postNotification(to: '/topics/${model.className!}',
-                                      title: model.className!,
-                                      body: 'you teacher has delete this class',
-                                      data: {'className':model.className!,'deleteClass':'true','addToClaas':'false'});
-                                  CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: model.teacherEmail,);
-
-
-
-
-
-                                  showToast(text: value.toString(), state: ToastState.SUCCESS);
-
-                                    Navigator.pop(context);
-                                  }, child:const Text('yes')),
-
-                                ],
-                              ),
-                              barrierDismissible: false
-
-                          );
+                          // CubitLayout.get(context).getAllStudent(className: model.className,formOut: true);
+                          //
+                          // showDialog(context: context,
+                          //     builder: (context)=> AlertDialog(
+                          //       title:const Text('Delete ClassRoom'),
+                          //       content:const Text('Do you want to delete this ClassRoom ?'),
+                          //
+                          //       actions: [
+                          //         TextButton(onPressed:(){
+                          //           Navigator.pop(context);
+                          //         }, child:const Text('no')),
+                          //         TextButton(onPressed: (){
+                          //
+                          //         CubitLayout.get(context).listStudent.forEach((element) {
+                          //             CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: element.studentEmail);
+                          //
+                          //           });
+                          //         CubitApp.get(context).deleteClass(className: model.className!);
+                          //         DioHelper.postNotification(to: '/topics/${model.className!}',
+                          //             title: model.className!,
+                          //             body: 'you teacher has delete this class',
+                          //             data: {'className':model.className!,'deleteClass':'true','addToClaas':'false'});
+                          //         CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: model.teacherEmail,);
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //         showToast(text: value.toString(), state: ToastState.SUCCESS);
+                          //
+                          //           Navigator.pop(context);
+                          //         }, child:const Text('yes')),
+                          //
+                          //       ],
+                          //     ),
+                          //     barrierDismissible: false
+                          //
+                          // );
+                         print( CubitApp.get(context).getRandomString(8));
                           break;
                         }
                         case 'unenroll':{
-                          CubitApp.get(context).deleteStudentToClassRoom(className:model.className!,studentEmail: myEmail!);
-                          CubitApp.get(context).deleteClassRoomFromStudent(className:model.className! );
-                             unSubscribeToTopic(topicName: model.className!);
+                          CubitApp.get(context).deleteStudentToClassRoom(code:model.code!,studentEmail: myEmail!);
+                          CubitApp.get(context).deleteClassRoomFromStudent(code:model.code! );
+                             unSubscribeToTopic(topicName: model.code!);
 
                           showToast(text: value.toString(), state: ToastState.SUCCESS);
 

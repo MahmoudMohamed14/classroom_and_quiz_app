@@ -8,6 +8,7 @@ import 'package:quizapp/models/quiz_model.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class CreateQuizScreen extends StatelessWidget {
   TextEditingController titleQuizControl=  TextEditingController();
@@ -44,7 +45,7 @@ class CreateQuizScreen extends StatelessWidget {
         var cubit=CubitLayout.get(context);
         return Scaffold(
           appBar: AppBar(
-            title:Text('Create Quiz',style: Theme.of(context).textTheme.headline1,),
+            title:Text('${getLang(context, "create_quiz")}',style: Theme.of(context).textTheme.headline1,),
             actions: [
               defaultTextButton(onPress:() {
         if(keyFormQuestion.currentState!.validate()) {
@@ -94,9 +95,9 @@ class CreateQuizScreen extends StatelessWidget {
                        SizedBox(height: 20,),
                      ],
                     ):const SizedBox(),
-                    defaultEditText(control: titleQuizControl, label: 'titleQuiz', validat: (s){
+                    defaultEditText(control: titleQuizControl, label: '${getLang(context, "titleQuiz_name")}', validat: (s){
                       if(s.toString().isEmpty){
-                        return 'title is empty';
+                        return '${getLang(context, "titleQuiz_name")}';
                       }
                       return null;
                     },

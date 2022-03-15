@@ -5,6 +5,7 @@ import 'package:quizapp/cubit_app/states_app.dart';
 import 'package:quizapp/models/class_room_model.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class CreateClassScreen extends StatelessWidget {
 
@@ -16,7 +17,8 @@ class CreateClassScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CubitApp, StateApp>(
-      listener: (context, state) {
+      listener: (context, state)
+      {
         if (state is SuccessCreateClassState) {
           Navigator.pop(context);
           showToast(
@@ -52,22 +54,24 @@ class CreateClassScreen extends StatelessWidget {
               TextButton(onPressed: () {
                 if(formKey.currentState!.validate()){
                   if(cubit.currentUser.isTeacher!) {
+                    String code=cubit.getRandomString(8).toLowerCase();
                     cubit.createClass(classRoom: ClassRoom(className:
                     classNameController.text,
                       subject: subjectController.text,
                       teacherEmail: cubit.currentUser.email,
-                      teacherName: cubit.currentUser.name,));
+                      teacherName: cubit.currentUser.name,code: code));
 
                   }else{
-                    cubit.getClass(className: classNameController.text);
-                    subscribeToTopic(topicName: classNameController.text.toString());
+                    cubit.getClass(code: classNameController.text);
+                    subscribeToTopic(topicName: classNameController.text);
+
                   }
 
                 }
 
-              }, child: Text(cubit.currentUser.isTeacher!?'Create':'Join'))
+              }, child: Text(cubit.currentUser.isTeacher!?'${getLang(context, "create_name")}':'${getLang(context, "join")}'))
             ],
-            title: Text('CreateClassRoom', style: Theme
+            title: Text('${getLang(context, "create_class_title")}', style: Theme
                 .of(context)
                 .textTheme
                 .headline1,),
@@ -84,54 +88,59 @@ class CreateClassScreen extends StatelessWidget {
                 children: [
 
                   defaultEditText(control: classNameController,
-                      label: 'classroom name',
+                      label:cubit.currentUser.isTeacher!? '${getLang(context, "class_name")}': '${getLang(context, "code")}',
                       validat: (s) {
                         if (s!.isEmpty) {
-                          return 'classrooms name is empty';
+                          return cubit.currentUser.isTeacher!?'${getLang(context, "class_empty")}': '${getLang(context, "code_empty")}';
                         }
-                        else if (cubit.myClass.isNotEmpty &&
-                            !cubit.currentUser.isTeacher!) {
+                        else if ( !cubit.currentUser.isTeacher!) {
                           int counterMyClassName = 0;
 
 
-                          for (int i = 0; i <
-                              cubit.myClass.length; i++) {
-                            if (s == cubit.myClass[i].className) {
-                              counterMyClassName = 1;
-                            }
-                          }
-                          return counterMyClassName == 1
-                              ? ' you are already joined '
-                              : null;
-                        }
-                        else if (cubit.currentUser.isTeacher! &&
-                            listClassName.isNotEmpty) {
-                          int counterTeacher = 0;
+                          for (int i = 0; i < cubit.myClass.length; i++) {
+                            if (s == cubit.myClass[i].code) {counterMyClassName = 1;}
 
-                          for (int i = 0; i <
-                              listClassName.length; i++) {
-                            if (s == listClassName[i]) {
-                              counterTeacher = 1;
-                            }
-                          }
-                          return counterTeacher == 1
-                              ? 'already exist try anther classNme '
-                              : null;
-                        }
-                        else if (!cubit.currentUser.isTeacher!) {
-                          int counterStudent = 0;
 
-                          for (int i = 0; i <
-                              listClassName.length; i++) {
-                            if (s.toString().trim() ==
-                                listClassName[i].trim()) {
-                              counterStudent = 1;
+                          }
+                          if(counterMyClassName!=1){
+                            for (int i = 0; i < listClassName.length; i++) {
+
+                              if (s == listClassName[i]) {counterMyClassName = 2;}
+
+
                             }
                           }
-                          return counterStudent == 1
-                              ? null
-                              : 'not exist ';
+
+
+                          return counterMyClassName == 1 ? ' you are already joined ' :counterMyClassName == 2?null:'${getLang(context, "not_exist")}';
                         }
+                        // else if (cubit.currentUser.isTeacher! &&
+                        //     listClassName.isNotEmpty) {
+                        //   int counterTeacher = 0;
+                        //
+                        //   for (int i = 0; i <
+                        //       listClassName.length; i++) {
+                        //     if (s == listClassName[i]) {
+                        //       counterTeacher = 1;
+                        //     }
+                        //   }
+                        //   return counterTeacher == 1
+                        //       ? '${getLang(context, "exist")}'
+                        //       : null;
+                        // }
+                        // else if (cubit.currentUser.isTeacher == false) {
+                        //   int counterStudent = 0;
+                        //
+                        //   for (int i = 0; i < listClassName.length; i++) {
+                        //     if(s==listClassName[i]){
+                        //
+                        //     }
+                        //
+                        //   }
+                        //   return counterStudent == 1
+                        //       ? null
+                        //       : '${getLang(context, "not_exist")}';
+                        // }
 
                         return null;
                       }
@@ -141,11 +150,11 @@ class CreateClassScreen extends StatelessWidget {
                       SizedBox(height: 20,),
 
                       defaultEditText(control: subjectController,
-                          label: 'subject',
+                          label: '${getLang(context, "subject_name")}',
                           validat: (s) {
                             if (s!.isEmpty &&
                                 cubit.currentUser.isTeacher!) {
-                              return 'subject is empty';
+                              return '${getLang(context, "subject_empty")}';
                             }
                             return null;
                           }),

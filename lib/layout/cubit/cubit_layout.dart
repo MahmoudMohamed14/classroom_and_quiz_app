@@ -17,6 +17,7 @@ import 'package:quizapp/moduls/people/people.dart';
 import 'package:quizapp/moduls/posts/posts_screen.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class CubitLayout extends Cubit<StateLayout> {
 
@@ -24,6 +25,11 @@ class CubitLayout extends Cubit<StateLayout> {
   ClassRoom? classRoomModel;
   String? classId;
   int index=0;
+  List<String>titleList (context)=>[
+    '${getLang(context, "posts")}',
+    '${getLang(context, "quiz_name")}',
+    '${getLang(context, "member")}'
+  ];
   int indexForQuiz=0;
   List<Widget> listWidget=[postScreen(),HomeWork(),PeopleScreen()];
   List<String> listTitle=[];
@@ -120,7 +126,7 @@ class CubitLayout extends Cubit<StateLayout> {
     emit(CreatePostLoadingState());
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className!)
+        .doc(classRoomModel!.code!)
         .collection('posts').add(Postmodel.toMap()).then((value) {
            getPost();
            DioHelper.postNotification(to: '/topics/${classRoomModel!.className!}',
@@ -147,7 +153,7 @@ class CubitLayout extends Cubit<StateLayout> {
     emit(GetPostLoadingState());
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className!)
+        .doc(classRoomModel!.code!)
         .collection('posts')
         .get()
         .then((value) {
@@ -164,12 +170,12 @@ class CubitLayout extends Cubit<StateLayout> {
 
   }
   List<StudentModel> listStudent=[];
-  void getAllStudent({String? className,bool formOut=false}){
+  void getAllStudent({String? code,bool formOut=false}){
     listStudent=[];
     emit(GetStudentLoadingState());
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(formOut?className:classRoomModel!.className!)
+        .doc(formOut?code:classRoomModel!.code!)
         .collection('Students')
         .get()
         .then((value) {
@@ -188,7 +194,7 @@ class CubitLayout extends Cubit<StateLayout> {
     emit(UploadingQuizLoadingState());
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className)
+        .doc(classRoomModel!.code)
         .collection('quiz')
         .add(quizModel.toMap()).then((value) {
           questionList=[];
@@ -208,7 +214,7 @@ class CubitLayout extends Cubit<StateLayout> {
     quizIdList=[];
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className)
+        .doc(classRoomModel!.code)
         .collection('quiz').get().then((value) {
           value.docs.forEach((element) {
             quizList.add(QuizModel.fromJson(json: element.data()));
@@ -233,7 +239,7 @@ class CubitLayout extends Cubit<StateLayout> {
    answerStudentModel=AnswerStudentModel(name: globalUserModel!.name,email:globalUserModel!.email,myAnswer: myAnswer );
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className)
+        .doc(classRoomModel!.code)
         .collection('quiz').doc(quizId)
         .collection('studentAnswer').doc(globalUserModel!.email)
         .set(answerStudentModel!.toMap()).then((value) {
@@ -249,10 +255,12 @@ class CubitLayout extends Cubit<StateLayout> {
 
   List<AnswerStudentModel>listAnswerStudentModel=[];
   void getStudentAnswer({required String quizId}){
+
     listAnswerStudentModel=[];
+    emit(GetStudentAnswerLoadingState ());
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className)
+        .doc(classRoomModel!.code)
         .collection('quiz')
         .doc(quizId)
         .collection('studentAnswer').
@@ -275,7 +283,7 @@ class CubitLayout extends Cubit<StateLayout> {
 
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className!)
+        .doc(classRoomModel!.code!)
         .collection('posts')
         .doc(postId)
         .delete()
@@ -294,12 +302,12 @@ class CubitLayout extends Cubit<StateLayout> {
 
     FirebaseFirestore.instance
         .collection('Classrooms')
-        .doc(classRoomModel!.className)
+        .doc(classRoomModel!.code)
         .collection('quiz')
         .doc(quizId).delete().then((value) {
       FirebaseFirestore.instance
           .collection('Classrooms')
-          .doc(classRoomModel!.className)
+          .doc(classRoomModel!.code)
           .collection('quiz')
           .doc(quizId).collection('studentAnswer').snapshots().forEach((element) {
         for (QueryDocumentSnapshot snapshot in element.docs) {

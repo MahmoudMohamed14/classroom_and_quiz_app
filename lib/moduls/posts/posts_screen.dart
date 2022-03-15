@@ -8,6 +8,7 @@ import 'package:quizapp/models/post_model.dart';
 import 'package:quizapp/moduls/posts/create_posts.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class postScreen extends StatelessWidget {
 
@@ -45,9 +46,9 @@ class postScreen extends StatelessWidget {
 
                     width: double.infinity,
                     height: 50,
-                    child:  const Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: Text(' share with your classrooms...',style: TextStyle(color: Colors.grey),),
+                    child:   Padding(
+                      padding:const EdgeInsets.only(top: 15,left: 15,right: 15),
+                      child: Text('${getLang(context, "sharepost_name")}',style: TextStyle(color: Colors.grey),),
                     ),
                   ),
                 ),

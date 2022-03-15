@@ -9,6 +9,7 @@ import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class AddStudent extends StatelessWidget {
 
@@ -33,7 +34,7 @@ class AddStudent extends StatelessWidget {
       builder:(context,state){
         return Scaffold(
           appBar: AppBar(
-            title:Text('AddStudent',style: Theme.of(context).textTheme.headline1,),
+            title:Text('${getLang(context, "add_student")}',style: Theme.of(context).textTheme.headline1,),
             actions: [
               TextButton(onPressed: (){
                 print('hi mahmoud');
@@ -66,7 +67,7 @@ class AddStudent extends StatelessWidget {
 
 
 
-              }, child: Text('Add'))
+              }, child: Text('${getLang(context, "add")}'))
             ],
           ),
           body: Padding(
@@ -75,7 +76,12 @@ class AddStudent extends StatelessWidget {
               children: [
                 state is AddStudentToClassLoadingState?LinearProgressIndicator():SizedBox(),
                 SizedBox(height: 20),
-                defaultEditText(control: control, label: 'email', validat: (s){})
+                defaultEditText(control: control, label: '${getLang(context, "email_name")}', validat: (s){
+                  if(s!.isEmpty){
+                    return'${getLang(context, "email_empty")}';
+                  }
+                  return null;
+                })
               ],
 
             ),

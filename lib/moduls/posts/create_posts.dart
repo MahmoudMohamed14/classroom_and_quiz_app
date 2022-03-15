@@ -5,6 +5,7 @@ import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class CreatePost extends StatelessWidget {
 
@@ -25,14 +26,14 @@ class CreatePost extends StatelessWidget {
         var cubit=CubitLayout.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text('Add Post',style: Theme.of(context).textTheme.bodyText1,),
+            title: Text('${getLang(context, "add_post")}',style: Theme.of(context).textTheme.bodyText1,),
             actions: [
             defaultTextButton(onPress: (){
               String date=DateFormat.yMMMd().format(DateTime.now()).toString();
               cubit.createPost(text: textController.text , date: date);
 
 
-            }, name: 'post')
+            }, name: '${getLang(context, "post")}')
             ],
 
           ),
@@ -48,14 +49,19 @@ class CreatePost extends StatelessWidget {
                     ],
                   ),
 
-                TextFormField(
-                  controller: textController,
-                  decoration: InputDecoration(
-                      hintText: 'Share with your classrooms...?',
+                Expanded(
+                  child: TextFormField(
+                    controller: textController,
+                    decoration: InputDecoration(
+                        hintText: '${getLang(context, "sharepost_name")}',
 
-                      border: InputBorder.none
+                        border: InputBorder.none
+                    ),
+                    keyboardType: TextInputType.text,
+                    maxLines:null ,
+                   
+
                   ),
-                  keyboardType: TextInputType.text,
                 )
               ],
             ),

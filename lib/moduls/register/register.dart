@@ -10,6 +10,7 @@ import 'package:quizapp/moduls/register/cubit/register_cubit.dart';
 import 'package:quizapp/moduls/register/cubit/register_state.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class Register extends StatelessWidget {
 
@@ -65,16 +66,16 @@ class Register extends StatelessWidget {
             key: keyForm,
             child: Column(
               children:  [
-                Text('Register',style:Theme.of(context).textTheme.headline1!.copyWith(fontSize: 24),),
+                Text('${getLang(context, "register_name")}',style:Theme.of(context).textTheme.headline1!.copyWith(fontSize: 24),),
                 SizedBox(height: 20,),
                 defaultEditText(
                     control: name,
                     textType: TextInputType.name,
                     prefIcon: Icons.title,
-                    label: 'full name',
+                    label: '${getLang(context, "name")}',
                     validat: (s){
                       if(s!.isEmpty){
-                        return'name is empty';
+                        return'${getLang(context, "name_empty")}';
                       }
                       return null;
 
@@ -85,10 +86,10 @@ class Register extends StatelessWidget {
                     control: email,
                     textType: TextInputType.emailAddress,
                     prefIcon: Icons.email,
-                    label: 'email',
+                    label: '${getLang(context, "email_name")}',
                     validat: (s){
                       if(s!.isEmpty){
-                        return'email is empty';
+                        return'${getLang(context, "email_empty")}';
                       }
                       return null;
 
@@ -101,12 +102,12 @@ class Register extends StatelessWidget {
                     control: password,
                     textType: TextInputType.visiblePassword,
                     prefIcon: Icons.lock,
-                    label: 'password',
+                    label: '${getLang(context, "password_name")}',
                     validat: (dynamic s){
                       if(s!.isEmpty){
-                        return'password is empty';
+                        return'${getLang(context, "password_empty")}';
                       }else if(s.toString().length<8){
-                        return 'must length greater than 8 char';
+                        return '${getLang(context, " validate_password")}';
                       }
 
 
@@ -137,9 +138,9 @@ class Register extends StatelessWidget {
 
                       },
 
-                      items:const[
-                        DropdownMenuItem<bool>(child: Text('Teacher',),value: true,),
-                        DropdownMenuItem<bool>(child: Text('Student '),value: false,),
+                      items:[
+                        DropdownMenuItem<bool>(child: Text('${getLang(context, "teacher")}',),value: true,),
+                        DropdownMenuItem<bool>(child: Text('${getLang(context, "student")}'),value: false,),
                       ]
                   ),
                 ),
@@ -160,7 +161,7 @@ class Register extends StatelessWidget {
 
                       }
 
-                    }, name: 'Register'),
+                    }, name: '${getLang(context, "register_name")}'),
 
 
 
