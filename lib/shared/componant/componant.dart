@@ -6,14 +6,14 @@ import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
 
 void subscribeToTopic({required String topicName}){
-    FirebaseMessaging.instance.subscribeToTopic('t$topicName').then((value) {
+    FirebaseMessaging.instance.subscribeToTopic(topicName).then((value) {
       print('subscribeFromTopic success');
     }).catchError((onError){
       print(onError.toString());
     });
 }
 void unSubscribeToTopic({required String topicName}){
-   FirebaseMessaging.instance.unsubscribeFromTopic('t$topicName').then((value) {
+   FirebaseMessaging.instance.unsubscribeFromTopic(topicName).then((value) {
      print('unsubscribeFromTopic success');
    }).catchError((onError){
      print(onError.toString());

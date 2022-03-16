@@ -9,6 +9,7 @@ import 'package:quizapp/cubit_app/cubit_app.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/student_model.dart';
+import 'package:quizapp/moduls/chat/chat_screen.dart';
 import 'package:quizapp/moduls/people/addstudent.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
@@ -42,32 +43,37 @@ class PeopleScreen extends StatelessWidget {
                   color: Colors.black26,
                 ),
                 const SizedBox(height: 10,),
-                Container(
-                  width: double.infinity,
+                InkWell(
+                  onTap: (){
+                    if(!globalUserModel!.isTeacher!) navigateTo(context, ChatDetailScreen(receiverEmail: cubit.classRoomModel!.teacherEmail,receiverName: cubit.classRoomModel!.teacherName,));
+                  },
+                  child: Container(
+                    width: double.infinity,
 
-                  child: Card(
+                    child: Card(
 
-                    shadowColor: mainColor,
-                    shape: RoundedRectangleBorder(
-
-
-                      borderRadius: BorderRadius.circular(5),
-
-
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          Expanded(child: Text(
-                            cubit.classRoomModel!.teacherName!, maxLines: 1,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText1!,)),
+                      shadowColor: mainColor,
+                      shape: RoundedRectangleBorder(
 
 
-                        ],
+                        borderRadius: BorderRadius.circular(5),
+
+
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          children: [
+                            Expanded(child: Text(
+                              cubit.classRoomModel!.teacherName!, maxLines: 1,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1!,)),
+
+
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -134,6 +140,7 @@ class PeopleScreen extends StatelessWidget {
     List<String>deletePost=['${getLang(context, "delete")}'];
     return InkWell(
       onTap: () {
+       if(globalUserModel!.isTeacher!) navigateTo(context,ChatDetailScreen(receiverEmail: studentModel.studentEmail,receiverName: studentModel.studentName,) );
 
       },
       child: Container(

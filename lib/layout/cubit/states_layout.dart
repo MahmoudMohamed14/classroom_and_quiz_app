@@ -65,3 +65,9 @@ class GetStudentAnswerErrorState extends StateLayout{
 class GetStudentAnswerSuccessState extends StateLayout{}
 class GetStudentAnswerLoadingState extends StateLayout{}
 class GetTokenSuccessState extends StateLayout{}
+class GetChatSuccessState extends StateLayout{}
+class SendMessageErrorState extends StateLayout{
+  String?error;
+  SendMessageErrorState({this.error});
+}
+class SendMessageSuccessState extends StateLayout{}

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/answer_student_model.dart';
+import 'package:quizapp/models/chat_model.dart';
 import 'package:quizapp/models/class_room_model.dart';
 import 'package:quizapp/models/post_model.dart';
 import 'package:quizapp/models/question_model.dart';
@@ -70,14 +71,11 @@ class CubitLayout extends Cubit<StateLayout> {
     emit(ActionButtonQuizState());
 
   }
-
   void setClassRoomAndId(ClassRoom classRoom,String ?classid){
     classRoomModel=classRoom;
     classId=classid;
     getPost();
   }
-
-
   static CubitLayout get(context) {
     return BlocProvider.of(context);
   }
@@ -94,7 +92,6 @@ class CubitLayout extends Cubit<StateLayout> {
     emit(AddNumberOfOption ());
 
   }
-
   void selectOption({required String option,required int index}){
    optionSelectList[index]=option;
 
@@ -251,8 +248,6 @@ class CubitLayout extends Cubit<StateLayout> {
     });
 
   }
-
-
   List<AnswerStudentModel>listAnswerStudentModel=[];
   void getStudentAnswer({required String quizId}){
 
@@ -334,8 +329,71 @@ class CubitLayout extends Cubit<StateLayout> {
     });
 
   }
+  List<ChatModel> messageModel=[];
+  void getMessage({
+    required String receiverEmail,
+  }){
+    FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(globalUserModel!.email)
+        .collection('chat')
+        .doc(receiverEmail)
+        .collection('message')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messageModel=[];
+      event.docs.forEach((element) {
+        messageModel.add(ChatModel.fromJson(element.data()));
+      });
+      emit(GetChatSuccessState());
 
 
 
+    });
 
+  }
+  void sendMessage({
+    required String receiverEmail,
+    required String dateTime,
+    required String ?text
+  }){
+    ChatModel chatModel=ChatModel(
+        sendEmail: globalUserModel!.email,
+        text: text,
+        dateTime: dateTime,
+        receiverEmail: receiverEmail
+    );
+    FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(globalUserModel!.email)
+        .collection('chat')
+        .doc(receiverEmail)
+        .collection('message')
+        .add(chatModel.toMap()).then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((onError){
+      print(onError.toString());
+
+      emit(SendMessageErrorState());
+    });
+
+    FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(receiverEmail)
+        .collection('chat')
+        .doc(globalUserModel!.email)
+        .collection('message')
+        .add(chatModel.toMap()).then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((onError){
+
+      print(onError.toString());
+      emit(SendMessageErrorState());
+    });
+
+  }
 }

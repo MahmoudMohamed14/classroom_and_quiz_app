@@ -36,9 +36,19 @@
   "time_empty": "الوقت فارغ",
   "choice_name":"اختيار من متعدد ",
   "trueandfalse_name": "صح وغلط",
-  "question_name": "السؤال",
+  "question_name": "السؤال ",
+  "question_empty": "السؤال فارغ",
   "question_next": "السؤال التالي",
   "option1_name": "الاختيار الاول(الاجابه الصحيحه)",
+  "option1_empty": "الاختيار الاول فارغ",
+  "option2_name": "الاختيارالثاني",
+  "option2_empty": "الاختيار الثاني فارغ",
+  "option3_name": "الاختيار الثالث",
+  "option3_empty": "الاختيار الثالث فارغ",
+  "option4_name": "الاختيار الرابع",
+  "option4_empty": "الاختيار الرابع فارغ",
+  "normal_quiz": "اختبار عادي",
+  "quiz_game": "لعبةاختبار ",
   "not_exist": "ليس موجود",
   "exist": "الاسم موجود حاول اسم اخر",
   "add_student": "اضافة طالب",
@@ -50,5 +60,6 @@
   "quiz": "الاختبار",
   "student_answer": "اجابات الطلاب",
   "code": "كود",
-  "code_empty": "الكود فارغ"
+  "code_empty": "الكود فارغ",
+  "myClass": "الفصول"
 }

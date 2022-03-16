@@ -10,13 +10,14 @@ import 'package:quizapp/cubit_app/states_app.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/layout_screen.dart';
 import 'package:quizapp/models/class_room_model.dart';
-import 'package:quizapp/models/menu_class_model.dart';
+
 import 'package:quizapp/moduls/classrooms/create_classroom.dart';
-import 'package:quizapp/moduls/home_work/create_quiz.dart';
+
 import 'package:quizapp/moduls/login/login_screen.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class ClassScreen extends StatelessWidget {
   @override
@@ -133,66 +134,61 @@ class ClassScreen extends StatelessWidget {
                   PopupMenuButton(
 
                     onSelected: (value){
-                      switch (value ){
-                        case 'edit':{
-                          showToast(text: value.toString(), state: ToastState.SUCCESS);
 
-                       break;
+                        if('${getLang(context, "delete")}'==value){
+                          CubitLayout.get(context).getAllStudent(code: model.code,formOut: true);
+
+                          showDialog(context: context,
+                              builder: (context)=> AlertDialog(
+                                title:const Text('Delete ClassRoom'),
+                                content:const Text('Do you want to delete this ClassRoom ?'),
+
+                                actions: [
+                                  TextButton(onPressed:(){
+                                    Navigator.pop(context);
+                                  }, child:const Text('no')),
+                                  TextButton(onPressed: (){
+
+                                  CubitLayout.get(context).listStudent.forEach((element) {
+                                      CubitApp.get(context).deleteClassRoomFromStudent(code: model.code!,studentEmail: element.studentEmail);
+
+                                    });
+                                  CubitApp.get(context).deleteClass(code: model.code!);
+                                  DioHelper.postNotification(to: '/topics/${model.className!}',
+                                      title: model.className!,
+                                      body: 'you teacher has delete this class',
+                                      data: {'className':model.className!,'deleteClass':'true','addToClaas':'false'});
+                                  CubitApp.get(context).deleteClassRoomFromStudent(code: model.code!,studentEmail: model.teacherEmail,);
+
+
+
+
+
+                                  showToast(text: value.toString(), state: ToastState.SUCCESS);
+
+                                    Navigator.pop(context);
+                                  }, child:const Text('yes')),
+
+                                ],
+                              ),
+                              barrierDismissible: false
+
+                          );
+
+
                         }
-                        case 'delete':{
-                          // CubitLayout.get(context).getAllStudent(className: model.className,formOut: true);
-                          //
-                          // showDialog(context: context,
-                          //     builder: (context)=> AlertDialog(
-                          //       title:const Text('Delete ClassRoom'),
-                          //       content:const Text('Do you want to delete this ClassRoom ?'),
-                          //
-                          //       actions: [
-                          //         TextButton(onPressed:(){
-                          //           Navigator.pop(context);
-                          //         }, child:const Text('no')),
-                          //         TextButton(onPressed: (){
-                          //
-                          //         CubitLayout.get(context).listStudent.forEach((element) {
-                          //             CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: element.studentEmail);
-                          //
-                          //           });
-                          //         CubitApp.get(context).deleteClass(className: model.className!);
-                          //         DioHelper.postNotification(to: '/topics/${model.className!}',
-                          //             title: model.className!,
-                          //             body: 'you teacher has delete this class',
-                          //             data: {'className':model.className!,'deleteClass':'true','addToClaas':'false'});
-                          //         CubitApp.get(context).deleteClassRoomFromStudent(className: model.className!,studentEmail: model.teacherEmail,);
-                          //
-                          //
-                          //
-                          //
-                          //
-                          //         showToast(text: value.toString(), state: ToastState.SUCCESS);
-                          //
-                          //           Navigator.pop(context);
-                          //         }, child:const Text('yes')),
-                          //
-                          //       ],
-                          //     ),
-                          //     barrierDismissible: false
-                          //
-                          // );
-                         print( CubitApp.get(context).getRandomString(8));
-                          break;
-                        }
-                        case 'unenroll':{
+                       if( '${getLang(context, "unenroll")}'==value){
                           CubitApp.get(context).deleteStudentToClassRoom(code:model.code!,studentEmail: myEmail!);
                           CubitApp.get(context).deleteClassRoomFromStudent(code:model.code! );
                              unSubscribeToTopic(topicName: model.code!);
 
                           showToast(text: value.toString(), state: ToastState.SUCCESS);
 
-                          break;
+
                         }
 
 
-                      }
+
                     },
 
 
@@ -200,19 +196,17 @@ class ClassScreen extends StatelessWidget {
 
                     itemBuilder: (BuildContext context){
                     return CubitApp.get(context).currentUser.isTeacher!?
-                    MenuItem.menuListTeacher.map(( String e) {
-                      return PopupMenuItem<String>(
+
+                       [ PopupMenuItem<String>(
 
 
-                        value: e,
-                          child:Text(e) );
-                    }).toList(): MenuItem.menuListStudent.map(( String e) {
-                      return PopupMenuItem<String>(
+                        value: '${getLang(context, "delete")}',
+                          child:Text('${getLang(context, "delete")}') )]
+                    : [ PopupMenuItem<String>(
 
 
-                          value: e,
-                          child:Text(e) );
-                    }).toList();
+                        value: '${getLang(context, "unenroll")}',
+                        child:Text('${getLang(context, "unenroll")}') )];
 
                   },
 
