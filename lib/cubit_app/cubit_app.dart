@@ -280,6 +280,21 @@ void deleteStudentToClassRoom({ required String code,required String studentEmai
   return String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
   }
+  String lang='en';
+  void changeLang({fromCache,lange}){
+    if (fromCache != null) {
+     lang = fromCache;
+      emit(ChangeLangStatesApp());
+    } else {
+     lang= lange;
+
+      CacheHelper.putData(key: 'lang', value: lange).then((value) {
+        emit(ChangeLangStatesApp());
+      });
+    }
+
+
+  }
 
 
   }

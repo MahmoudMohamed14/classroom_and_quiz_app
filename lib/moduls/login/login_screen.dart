@@ -3,17 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizapp/cubit_app/cubit_app.dart';
-
 import 'package:quizapp/moduls/classrooms/classrooms.dart';
-
-
 import 'package:quizapp/moduls/login/cubit/login_cubit.dart';
 import 'package:quizapp/moduls/login/cubit/login_state.dart';
 
 import 'package:quizapp/moduls/register/register.dart';
-
-
-
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/translate/applocale.dart';
 
@@ -66,14 +60,17 @@ class LoginScreen extends StatelessWidget {
                       child: Form(
                         key: keyForm,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('${getLang(context, "login_name")}',
-                              style:Theme.of(context).textTheme.headline3!.copyWith(color: Colors.black),
+                            Image(width: 200,
+                                height: 200,
+                                image: AssetImage('assets/image/login.png')
                             ),
-                            SizedBox(height: 10,),
+
+                          //  Text('${getLang(context, "login_name")}', style:Theme.of(context).textTheme.headline3!.copyWith(color: Colors.black),),
+                          //  SizedBox(height: 10,),
                             // Text('login now to ', style:Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black54,fontSize: 18),),
-                            SizedBox(height: 30,),
+
                             defaultEditText(
                                 control: email,
                                 validat: ( s){

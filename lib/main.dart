@@ -1,4 +1,6 @@
 
+
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -43,6 +45,12 @@ void main()async {
 
   await Firebase.initializeApp();
   await CacheHelper.init();
+  String? lang;
+  if(CacheHelper.getData(key: 'lang')!=null) {
+    lang =CacheHelper.getData(key: 'lang');
+  }else{
+    lang='en';
+  }
 
   var token= await FirebaseMessaging.instance.getToken();
   print('token= '+token.toString());
@@ -71,7 +79,7 @@ print(message.notification!.title);
   BlocOverrides.runZoned(
         () {
           runApp(
-             MyApp(),);
+             MyApp(lang: lang,),);
     },
     blocObserver: MyBlocObserver(),
   );
@@ -81,6 +89,9 @@ print(message.notification!.title);
 }
 
 class MyApp extends StatelessWidget {
+  String?lang;
+  MyApp({this.lang});
+
 
   // This widget is the root of your application.
   @override
@@ -89,7 +100,7 @@ class MyApp extends StatelessWidget {
 
          MultiBlocProvider(
            providers: [
-             BlocProvider(create: (BuildContext context)=>CubitApp()..getClassName()..getCurrentUser()..getMyAllClassRoom()..getAllUser(),),
+             BlocProvider(create: (BuildContext context)=>CubitApp()..getClassName()..getCurrentUser()..getMyAllClassRoom()..getAllUser()..changeLang(fromCache: lang),),
              BlocProvider<CubitLayout>(create: (context)=>CubitLayout()),
            ],
            child: BlocConsumer<CubitApp,StateApp>(
@@ -142,7 +153,7 @@ class MyApp extends StatelessWidget {
                    Locale('en',),
                    Locale('ar'),
                  ],
-                 locale: Locale('ar') ,
+                 locale: Locale(CubitApp.get(context).lang) ,
 
                  localizationsDelegates: const[
                    AppLocale.delegate,
@@ -182,6 +193,8 @@ class MyApp extends StatelessWidget {
     }
     return launch;
   }
+
+
 }
 
 

@@ -34,12 +34,15 @@ Widget defaultButton(
       borderRadius: BorderRadius.circular(20),
       color: color
 
+
+
   ) ,
 
 
   height: 50,
   width:width ,
   child: MaterialButton(
+
 
 
     onPressed: () {

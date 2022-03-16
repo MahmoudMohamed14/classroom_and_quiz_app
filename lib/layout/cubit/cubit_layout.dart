@@ -396,4 +396,43 @@ class CubitLayout extends Cubit<StateLayout> {
     });
 
   }
+  Future updateClassRoom({name,subject})async{
+    emit(UpDateClassLoadingState());
+  await FirebaseFirestore.instance.collection('Classrooms')
+        .doc(classRoomModel!.code).update({'className':name,'subject':subject}).then((value) {
+      FirebaseFirestore.instance.collection('users')
+          .doc(classRoomModel!.teacherEmail)
+          .collection('Classrooms')
+          .doc(classRoomModel!.code).update({'className':name,'subject':subject}).then((value) {
+
+      }).catchError((onError){
+        print(onError.toString());
+      });
+
+
+
+      listStudent.forEach((element) {
+            FirebaseFirestore.instance.collection('users')
+                .doc(element.studentEmail)
+                .collection('Classrooms')
+                .doc(classRoomModel!.code).update({'className':name,'subject':subject}).then((value) {
+
+            }).catchError((onError){
+              print(onError.toString());
+              emit(UpDateClassErrorState());
+            });
+
+
+          });
+      emit(UpDateClassSuccessState());
+
+        }).catchError((onError){
+          print(onError.toString());
+          emit(UpDateClassErrorState());
+    });
+
+  }
+  void updateClassfromStudent({name,subject,email}){
+
+  }
 }

@@ -28,6 +28,11 @@ class LayoutScreen extends StatelessWidget {
         var cubit =CubitLayout.get(context);
         return Scaffold(
           appBar: AppBar(
+            actions: [
+              if(globalUserModel!.isTeacher!)  IconButton(onPressed:(){
+             navigateTo(context, SettingClassRoomScreen());
+              } ,icon: Icon(Icons.settings))
+            ],
             title: Text(cubit.titleList(context)[cubit.index],style: Theme.of(context).textTheme.headline1,),
           ),
           body: cubit.listWidget[cubit.index],

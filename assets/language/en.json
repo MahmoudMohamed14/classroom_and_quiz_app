@@ -61,6 +61,11 @@
   "quiz": "Quiz",
   "student_answer": "studentsAnswer",
   "code": "Code",
+  "class_code": "Class Code: ",
   "code_empty": "Code is empty",
-  "myClass": "MyClass"
+  "myClass": "MyClass",
+  "update": "UpDate",
+  "setting": "Setting",
+  "language": "Language",
+  "log_out": "Sign Out"
 }

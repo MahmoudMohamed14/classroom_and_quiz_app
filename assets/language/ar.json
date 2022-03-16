@@ -61,5 +61,10 @@
   "student_answer": "اجابات الطلاب",
   "code": "كود",
   "code_empty": "الكود فارغ",
-  "myClass": "الفصول"
+  "myClass": "الفصول",
+  "class_code": "كود الفصل: ",
+  "update": "تعديل",
+  "setting": "الاعدادات",
+  "language": "اللغه",
+  "log_out": "تسجيل خروج"
 }

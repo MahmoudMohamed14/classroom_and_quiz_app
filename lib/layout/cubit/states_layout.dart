@@ -71,3 +71,10 @@ class SendMessageErrorState extends StateLayout{
   SendMessageErrorState({this.error});
 }
 class SendMessageSuccessState extends StateLayout{}
+class UpDateClassErrorState extends StateLayout{
+  String?error;
+  UpDateClassErrorState({this.error});
+}
+class UpDateClassLoadingState extends StateLayout{}
+class UpDateClassSuccessState extends StateLayout{}
+

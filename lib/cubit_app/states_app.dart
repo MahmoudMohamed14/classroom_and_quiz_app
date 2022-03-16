@@ -66,3 +66,4 @@ class DeleteStudentFromClassErrorState extends StateApp{
   DeleteStudentFromClassErrorState({this.error});
 }
 class GetMyAllClassLoadingState extends StateApp{}
+class ChangeLangStatesApp extends StateApp{}

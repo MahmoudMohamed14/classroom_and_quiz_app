@@ -62,16 +62,109 @@ class ClassScreen extends StatelessWidget {
 
           leadingWidth: 10,
           actions: [
-            IconButton(onPressed: (){
-
-                signOut(context,LoginScreen());
-
-
-
-            }, icon: Icon(Icons.logout))
+            // IconButton(onPressed: (){
+            //
+            //     signOut(context,LoginScreen());
+            //
+            //
+            //
+            // }, icon: Icon(Icons.logout))
           ],
-          title: Text('MyClass',style: Theme.of(context).textTheme.headline1,),
+          title: Text('${getLang(context, "myClass")}',style: Theme.of(context).textTheme.headline1,),
         ),
+        endDrawer: Drawer(
+          child: ListView(
+
+              children: [
+                UserAccountsDrawerHeader(
+                    accountName: Text(globalUserModel?.name??'',style: TextStyle(color: Colors.white),),
+                    accountEmail:Text(globalUserModel?.email??'',style: TextStyle(color: Colors.white)),
+                  currentAccountPicture: CircleAvatar(
+                    child: Icon(Icons.person),
+                    backgroundColor: Colors.white,
+                  ),
+
+                ),
+               Padding(
+                 padding: const EdgeInsets.all(10),
+                 child: Row(
+                   children: [
+                     Icon(Icons.language),
+                    const SizedBox(width: 5,),
+                     Text('${getLang(context, 'language')}',style: Theme.of(context).textTheme.bodyText1,)
+                   ],
+                 ),
+               ),
+               Container(width: double.infinity,height: 1,color: Colors.black,),
+
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                      child:  Container(
+                        padding:const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                        width: double.infinity,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: mainColor)
+
+                        ),
+                        child: DropdownButton(
+
+                            isExpanded: true,
+                            iconSize: 36,
+                            value: CubitApp.get(context).lang,
+                            onChanged: ( s){
+                              CubitApp.get(context).changeLang(lange: s);
+                            },
+
+                            items:const[
+                              DropdownMenuItem<String>(child: Text( "English",),value: 'en',),
+                              DropdownMenuItem<String>(child: Text( "عربي"),value: 'ar',),
+                            ]
+                        ),
+                      ),
+                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: InkWell(
+                    onTap: (){
+                      signOut(context,LoginScreen());
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+
+                      decoration: BoxDecoration(
+
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: mainColor)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+
+                        children: [
+                          Icon(Icons.logout),
+                          const SizedBox(width: 7,),
+                          Text('${getLang(context, 'log_out')}'),
+                        ],
+                      ),
+
+
+
+
+
+
+                    ),
+                  ),
+                ),
+              ]
+          )
+
+        ),
+
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             navigateTo(context, CreateClassScreen());
@@ -121,15 +214,17 @@ class ClassScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('${model!.className}',style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),),
-                    SizedBox(height: 5,),
-                    Text('${model.subject}',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${model!.className}',style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),),
+                      SizedBox(height: 5,),
+                      Text('${model.subject}',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),),
+                    ],
+                  ),
                 ),
-                Spacer(),
+
 
                   PopupMenuButton(
 
@@ -214,8 +309,8 @@ class ClassScreen extends StatelessWidget {
 
               ],
             ),
-            SizedBox(height: 50,),
-            Text('${model.teacherName}',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),),
+            SizedBox(height: 20,),
+           // Text('${model.teacherName}',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),),
 
 
           ],
