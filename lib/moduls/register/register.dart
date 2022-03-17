@@ -103,11 +103,11 @@ class Register extends StatelessWidget {
                     textType: TextInputType.visiblePassword,
                     prefIcon: Icons.lock,
                     label: '${getLang(context, "password_name")}',
-                    validat: (dynamic s){
+                    validat: (s){
                       if(s!.isEmpty){
                         return'${getLang(context, "password_empty")}';
-                      }else if(s.toString().length<8){
-                        return '${getLang(context, " validate_password")}';
+                      }else if(s.length<8){
+                        return '${getLang(context, "validate_password")}';
                       }
 
 

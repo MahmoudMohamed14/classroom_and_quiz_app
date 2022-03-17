@@ -24,6 +24,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 
     await Firebase.initializeApp();
+    print(message.data);
     print(message.notification!.title);
     if(message.notification!.title=='Add to Class'){
       print(message.data['addToClaas']);
@@ -57,7 +58,7 @@ void main()async {
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
 
-print(message.notification!.title);
+print(message.data);
     if(message.notification!.title=='Add to Class'){
       print(message.data['addToClaas']);
    return subscribeToTopic(topicName: message.data['className']);
@@ -117,8 +118,6 @@ class MyApp extends StatelessWidget {
                    colorScheme: ColorScheme.fromSwatch().copyWith(
                        primary: mainColor,
                        secondary: mainColor
-
-
                    ),
                    textTheme: const TextTheme(
                      bodyText1: TextStyle(

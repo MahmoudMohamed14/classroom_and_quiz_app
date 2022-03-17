@@ -31,7 +31,7 @@ class CreateQuizScreen extends StatelessWidget {
       listener: (context,state){
         if(state is GetQuizSuccessState){
           showToast(text: 'add quiz', state: ToastState.SUCCESS);
-          DioHelper.postNotification(to: '/topics/${CubitLayout.get(context).classRoomModel!.className!}',
+          DioHelper.postNotification(to: '/topics/${CubitLayout.get(context).classRoomModel!.code!}',
               title: CubitLayout.get(context).classRoomModel!.className!,
               body: '${globalUserModel!.name} create new quiz',
               data: {'addToClaas':'false','deleteClass':'false','className':'', "type": "order",

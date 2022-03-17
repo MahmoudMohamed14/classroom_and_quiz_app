@@ -126,7 +126,7 @@ class CubitLayout extends Cubit<StateLayout> {
         .doc(classRoomModel!.code!)
         .collection('posts').add(Postmodel.toMap()).then((value) {
            getPost();
-           DioHelper.postNotification(to: '/topics/${classRoomModel!.className!}',
+           DioHelper.postNotification(to: '/topics/${classRoomModel!.code!}',
                title: classRoomModel!.className!,
                body: '${globalUserModel!.name} post in class',
              data: {'addToClaas':'false','deleteClass':'false','className':'', "type": "order",

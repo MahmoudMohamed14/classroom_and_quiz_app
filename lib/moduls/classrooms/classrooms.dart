@@ -249,7 +249,7 @@ class ClassScreen extends StatelessWidget {
 
                                     });
                                   CubitApp.get(context).deleteClass(code: model.code!);
-                                  DioHelper.postNotification(to: '/topics/${model.className!}',
+                                  DioHelper.postNotification(to: '/topics/${model.code!}',
                                       title: model.className!,
                                       body: 'you teacher has delete this class',
                                       data: {'className':model.className!,'deleteClass':'true','addToClaas':'false'});

@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
@@ -56,19 +57,28 @@ class ChatDetailScreen extends StatelessWidget {
                   children: [
 
                     Expanded(
-                      child: ListView.separated(
-                          itemBuilder: (context, index) =>
-                          myEmail == cubit.messageModel[index].receiverEmail
-                              ?
-                          buildLeftMessage(cubit.messageModel[index])
-                              : buildRightMessage(
-                              cubit.messageModel[index])
-                          ,
-                          separatorBuilder: (context, index) =>
-                              SizedBox(height: 15,)
-                          ,
-                          itemCount: cubit.messageModel.length),
+                      child: SingleChildScrollView(
+                        reverse: true,
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+
+
+                            itemBuilder: (context, index) =>
+                            myEmail == cubit.messageModel[index].receiverEmail
+                                ?
+                            buildLeftMessage(cubit.messageModel[index])
+                                : buildRightMessage(
+                                cubit.messageModel[index])
+                            ,
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: 15,)
+
+                            ,
+                            itemCount: cubit.messageModel.length),
+                      ),
                     ),
+                    SizedBox(height: 20,),
                     Container(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       decoration: BoxDecoration(
@@ -135,40 +145,46 @@ class ChatDetailScreen extends StatelessWidget {
   Widget buildLeftMessage(ChatModel chatModel) =>
       Align(
         alignment: AlignmentDirectional.centerStart,
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadiusDirectional.only(
-                topEnd: Radius.circular(10),
-                topStart: Radius.circular(10),
-                bottomEnd: Radius.circular(10),
-              )
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadiusDirectional.only(
+                  topEnd: Radius.circular(10),
+                  topStart: Radius.circular(10),
+                  bottomEnd: Radius.circular(10),
+                )
+            ),
+            padding: EdgeInsets.symmetric(
+                vertical: 5,
+                horizontal: 10
+            ),
+            child: Text('${chatModel.text}'),
           ),
-          padding: EdgeInsets.symmetric(
-              vertical: 5,
-              horizontal: 10
-          ),
-          child: Text('${chatModel.text}'),
         ),
       );
 
   Widget buildRightMessage(ChatModel chatModel) =>
       Align(
         alignment: AlignmentDirectional.centerEnd,
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.green[400],
-              borderRadius: BorderRadiusDirectional.only(
-                topEnd: Radius.circular(10),
-                topStart: Radius.circular(10),
-                bottomStart: Radius.circular(10),
-              )
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.green[400],
+                borderRadius: BorderRadiusDirectional.only(
+                  topEnd: Radius.circular(10),
+                  topStart: Radius.circular(10),
+                  bottomStart: Radius.circular(10),
+                )
+            ),
+            padding: EdgeInsets.symmetric(
+                vertical: 5,
+                horizontal: 10
+            ),
+            child: Text('${chatModel.text}'),
           ),
-          padding: EdgeInsets.symmetric(
-              vertical: 5,
-              horizontal: 10
-          ),
-          child: Text('${chatModel.text}'),
         ),
       );
 }
