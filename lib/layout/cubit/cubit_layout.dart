@@ -1,10 +1,10 @@
-import 'dart:math';
+
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/answer_student_model.dart';
 import 'package:quizapp/models/chat_model.dart';
@@ -17,6 +17,7 @@ import 'package:quizapp/moduls/home_work/home_work.dart';
 import 'package:quizapp/moduls/people/people.dart';
 import 'package:quizapp/moduls/posts/posts_screen.dart';
 import 'package:quizapp/shared/constant/constant.dart';
+import 'package:quizapp/shared/network/local/cache_helper.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
 import 'package:quizapp/shared/translate/applocale.dart';
 
@@ -216,7 +217,20 @@ class CubitLayout extends Cubit<StateLayout> {
           value.docs.forEach((element) {
             quizList.add(QuizModel.fromJson(json: element.data()));
             quizIdList.add(element.id);
-
+            //get is test answer for this quiz? if he sign in anther device
+           element.reference.
+           collection('studentAnswer').
+           doc(myEmail).
+           get().then((value) {
+             if(value.data()!=null) {
+               CacheHelper.putData(
+                   key: element.id + globalUserModel!.email!, value: true);
+               print('get anser ');
+             }
+           }).
+           catchError((onError){
+             print('error get answer '+onError.toString());
+           });
 
           });
 
