@@ -70,6 +70,7 @@ class PeopleScreen extends StatelessWidget {
                                   .of(context)
                                   .textTheme
                                   .bodyText1!,)),
+                            if(!globalUserModel!.isTeacher!)   Icon(Icons.message)
 
 
                           ],

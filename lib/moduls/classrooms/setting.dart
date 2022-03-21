@@ -5,6 +5,7 @@ import 'package:quizapp/cubit_app/cubit_app.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/shared/componant/componant.dart';
+import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/translate/applocale.dart';
 
 class SettingClassRoomScreen extends StatelessWidget {
@@ -81,6 +82,8 @@ class SettingClassRoomScreen extends StatelessWidget {
                       children: [
                         Text('${getLang(context, "class_code")}',style: Theme.of(context).textTheme.headline1,),
                         Text('${cubit.classRoomModel!.code}',style: Theme.of(context).textTheme.bodyText1,),
+                        Spacer(),
+                        Icon(Icons.copy,color:  mainColor,)
                       ],
                     ),
                   ),
