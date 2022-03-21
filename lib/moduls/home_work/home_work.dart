@@ -11,6 +11,7 @@ import 'package:quizapp/moduls/home_work/quiz_screen.dart';
 import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
+import 'package:quizapp/shared/translate/applocale.dart';
 
 class HomeWork extends StatelessWidget {
   var scaffoldKey=GlobalKey<ScaffoldState>();
@@ -160,16 +161,16 @@ class HomeWork extends StatelessWidget {
                 else IconButton(onPressed: (){
                   showDialog(context: context,
                       builder: (context)=> AlertDialog(
-                       title: Text('Delete Quiz'),
-                        content: Text('Do you want to delete this Quiz ?'),
+                       title: Text('${getLang(context, "delete_quiz")}'),
+                        content: Text('${getLang(context, "wantDelete_quiz")}'),
                         actions: [
                           TextButton(onPressed:(){
                              Navigator.pop(context);
-                          }, child: Text('no')),
+                          }, child: Text('${getLang(context, "no")}')),
                           TextButton(onPressed: (){
                             CubitLayout.get(context).deleteQuiz(quizId: quizId!);
                             Navigator.pop(context);
-                          }, child: Text('yes')),
+                          }, child: Text('${getLang(context, "yes")}')),
 
                         ],
                       ),

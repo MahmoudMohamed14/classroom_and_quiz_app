@@ -104,46 +104,56 @@ class CreateQuizScreen extends StatelessWidget {
                       prefIcon: Icons.text_fields
                     ),
                     const  SizedBox(height: 20,),
-                    defaultEditText(control: dateQuizControl, label: '${getLang(context, "date_name")}', validat: (s)
-                    {
-                      if(s.toString().isEmpty){
-                        return '${getLang(context, "date_empty")}';
-                      }
-                      return null;
-                    },
-                        onPress: (){
+                    Row(
+                      children: [
+                        Expanded(
 
-                        showDatePicker
-                          (context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.parse('2023-01-01')).then((value) {
-                              dateQuizControl.text=DateFormat.yMMMd() .format(value!).toString();
+                          child: defaultEditText(control: dateQuizControl, label: '${getLang(context, "date_name")}', validat: (s)
+                          {
+                            if(s.toString().isEmpty){
+                              return '${getLang(context, "date_empty")}';
+                            }
+                            return null;
+                          },
+                              onPress: (){
 
-                        });
-                      },
-                      textType: TextInputType.none,
-                      prefIcon: Icons.date_range
+                              showDatePicker
+                                (context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime.parse('2023-01-01')).then((value) {
+                                    dateQuizControl.text=DateFormat.yMMMd() .format(value!).toString();
 
-                    ),
-                    const SizedBox(height: 20,),
-                    defaultEditText(control: timeQuizControl,
-                        label: '${getLang(context, "time_name")}',
-                        validat: (s) {
-                      if(s.toString().isEmpty){
-                        return '${getLang(context, "time_empty")}';
-                      }
-                      return null;
-                    },
-                        onPress: (){
-                          showTimePicker(context: context, initialTime: TimeOfDay.now()).then((value) {
-                           timeQuizControl.text=value!.format(context).toString();
-                          });
+                              });
+                            },
+                            textType: TextInputType.none,
+                            prefIcon: Icons.date_range
 
-                        },
-                        textType: TextInputType.none,
-                      prefIcon: Icons.access_time
+                          ),
+                        ),
+                        const SizedBox(width: 20,),
+                        Expanded(
 
+                          child: defaultEditText(control: timeQuizControl,
+                              label: '${getLang(context, "time_name")}',
+                              validat: (s) {
+                            if(s.toString().isEmpty){
+                              return '${getLang(context, "time_empty")}';
+                            }
+                            return null;
+                          },
+                              onPress: (){
+                                showTimePicker(context: context, initialTime: TimeOfDay.now()).then((value) {
+                                 timeQuizControl.text=value!.format(context).toString();
+                                });
+
+                              },
+                              textType: TextInputType.none,
+                            prefIcon: Icons.access_time
+
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20,),
                     Container(

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:quizapp/bloc_observer.dart';
@@ -24,22 +25,73 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 
     await Firebase.initializeApp();
-    print(message.data);
-    print(message.notification!.title);
-    if(message.notification!.title=='Add to Class'){
-      print(message.data['addToClaas']);
-     return subscribeToTopic(topicName: message.data['className']);
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
 
-    } if(message.notification!.title== 'your teacher  delete you'){
-      print(message.data['deleteClass']);
-     return unSubscribeToTopic(topicName: message.data['className']);
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+
+
+          NotificationDetails(
+
+            android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                icon: android.smallIcon,
+                enableLights: true,
+                enableVibration: true,
+                playSound: true
+              // other properties...
+            ),),
+
+        payload: message.data['payload']
+
+      );
+    }
+    String ?s=message.data['payload'];
+    if(s!=null){
+      if(s.split('b').first=='su') {
+        subscribeToTopic(topicName: s
+            .split('b')
+            .last);
+
+      }
+      if(s.split('b').first=='unsu') {
+        unSubscribeToTopic(topicName: s
+            .split('b')
+            .last);
+      }
+
     }
 
-
-
-
-
 }
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  // description
+  importance: Importance.high,
+
+
+  playSound: true,
+  enableVibration: true,
+  enableLights: true,
+  showBadge: true,
+
+  sound: RawResourceAndroidNotificationSound('notification_sound'),
+
+
+    
+
+
+);
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,21 +107,71 @@ void main()async {
 
   var token= await FirebaseMessaging.instance.getToken();
   print('token= '+token.toString());
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
+  );
+
+
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel).catchError((onError){
+        print(onError.toString());
+  });
+
+
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
 
-print(message.data);
-    if(message.notification!.title=='Add to Class'){
-      print(message.data['addToClaas']);
-   return subscribeToTopic(topicName: message.data['className']);
-      
-    } if(message.notification!.title== 'your teacher  delete you'){
-      print(message.data['deleteClass']);
-    return unSubscribeToTopic(topicName: message.data['className']);
+    AndroidNotification? android = message.notification?.android;
+
+    // If `onMessage` is triggered with a notification, construct our own
+    // local notification to show to users using the created channel.
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              icon: android.smallIcon,
+              enableLights: true,
+              enableVibration: true,
+              playSound: true,
+              priority: Priority.high
+              // other properties...
+            ),),
+         payload:message.data['payload'],
+
+
+      );
     }
+    String ?s=message.data['payload'];
+    if(s!=null){
+      if(s.split('b').first=='su') {
+        subscribeToTopic(topicName: s
+            .split('b')
+            .last);
 
+      }
+      if(s.split('b').first=='unsu') {
+        unSubscribeToTopic(topicName: s
+            .split('b')
+            .last);
+      }
+
+    }
   });
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   if(CacheHelper.getData(key: 'email')!=null) {
     myEmail = CacheHelper.getData(key: 'email');
@@ -97,9 +199,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return
-
-         MultiBlocProvider(
+    return MultiBlocProvider(
            providers: [
              BlocProvider(create: (BuildContext context)=>CubitApp()..getClassName()..getCurrentUser()..getMyAllClassRoom()..getAllUser()..changeLang(fromCache: lang),),
              BlocProvider<CubitLayout>(create: (context)=>CubitLayout()),
@@ -107,6 +207,28 @@ class MyApp extends StatelessWidget {
            child: BlocConsumer<CubitApp,StateApp>(
              listener:(context,state){} ,
              builder: (context,state){
+               var initialzationSettingsAndroid =
+               AndroidInitializationSettings('@mipmap/ic_launcher',);
+               var initializationSettings =
+               InitializationSettings(android: initialzationSettingsAndroid);
+               flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification:(s) {
+                 if(s!=null){
+                   if(s.split('b').first=='su') {
+                     subscribeToTopic(topicName: s
+                         .split('b')
+                         .last);
+                     CubitApp.get(context).getMyAllClassRoom();
+                   }
+                   if(s.split('b').first=='unsu') {
+                     unSubscribeToTopic(topicName: s
+                         .split('b')
+                         .last);
+                     CubitApp.get(context).getMyAllClassRoom();
+                   }
+
+                 }
+
+               });
                return  MaterialApp(
                  debugShowCheckedModeBanner: false,
 

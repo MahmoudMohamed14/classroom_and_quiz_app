@@ -201,13 +201,10 @@ class PeopleScreen extends StatelessWidget {
                             data: {
                               "type": "order",
                               "id": "87",
-                              'addToClaas': 'false',
+                              'payload': 'unsub${CubitLayout.get(context).classRoomModel!.code!}',
                               "click_action": "FLUTTER_NOTIFICATION_CLICK",
-                              'className': CubitLayout
-                                  .get(context)
-                                  .classRoomModel!
-                                  .className!,
-                              'deleteClass': 'true'
+
+
                             });
                       }
                     });

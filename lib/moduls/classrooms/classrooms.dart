@@ -140,15 +140,15 @@ class ClassScreen extends StatelessWidget {
                       decoration: BoxDecoration(
 
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: mainColor)
+                          border: Border.all(color: Colors.red)
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
 
                         children: [
-                          Icon(Icons.logout),
+                          Icon(Icons.logout,color: Colors.red,),
                           const SizedBox(width: 7,),
-                          Text('${getLang(context, 'log_out')}'),
+                          Text('${getLang(context, 'log_out')}',style: TextStyle(color: Colors.red),),
                         ],
                       ),
 
@@ -235,13 +235,13 @@ class ClassScreen extends StatelessWidget {
 
                           showDialog(context: context,
                               builder: (context)=> AlertDialog(
-                                title:const Text('Delete ClassRoom'),
-                                content:const Text('Do you want to delete this ClassRoom ?'),
+                                title: Text('${getLang(context, "delete_class")}'),
+                                content:Text('${getLang(context, "wantDelete_class")}'),
 
                                 actions: [
                                   TextButton(onPressed:(){
                                     Navigator.pop(context);
-                                  }, child:const Text('no')),
+                                  }, child: Text('${getLang(context, "no")}')),
                                   TextButton(onPressed: (){
 
                                   CubitLayout.get(context).listStudent.forEach((element) {
@@ -252,17 +252,13 @@ class ClassScreen extends StatelessWidget {
                                   DioHelper.postNotification(to: '/topics/${model.code!}',
                                       title: model.className!,
                                       body: 'you teacher has delete this class',
-                                      data: {'className':model.className!,'deleteClass':'true','addToClaas':'false'});
+                                      data: { 'payload': 'unsub${model.code!}',});
                                   CubitApp.get(context).deleteClassRoomFromStudent(code: model.code!,studentEmail: model.teacherEmail,);
-
-
-
-
 
                                   showToast(text: value.toString(), state: ToastState.SUCCESS);
 
                                     Navigator.pop(context);
-                                  }, child:const Text('yes')),
+                                  }, child: Text('${getLang(context, "yes")}')),
 
                                 ],
                               ),

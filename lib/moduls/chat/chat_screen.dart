@@ -72,7 +72,7 @@ class ChatDetailScreen extends StatelessWidget {
                                 cubit.messageModel[index])
                             ,
                             separatorBuilder: (context, index) =>
-                                SizedBox(height: 15,)
+                                SizedBox(height: 10,)
 
                             ,
                             itemCount: cubit.messageModel.length),

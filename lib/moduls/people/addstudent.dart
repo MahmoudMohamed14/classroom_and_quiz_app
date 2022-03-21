@@ -53,7 +53,7 @@ class AddStudent extends StatelessWidget {
                     DioHelper.postNotification(to: token,
                         title: 'Add to Class',
                         body: ' your teacher ${globalUserModel!.name} add you in  class',
-                        data: {'addToClaas':'true','className':CubitLayout.get(context).classRoomModel!.className,
+                        data: {'payload':'sub${CubitLayout.get(context).classRoomModel!.code}','className':CubitLayout.get(context).classRoomModel!.className,
                           'type': 'order',
                           'id': '87',
                           'deleteClass':'false',
