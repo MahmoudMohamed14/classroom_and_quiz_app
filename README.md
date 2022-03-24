@@ -1,16 +1,26 @@
 # quizapp
+This is an education application, this application for teacher and student
+teacher can create classroom and create normal quiz or game quiz ,add and delete student,share post ,edit informaion class,delete class and quiz 
+student can enter class about code of class and do quiz if student test he can't enter quiz agin and the answer automatically teacher see answer 
+I made by using Firebase, Shared Preference and State Management (Bloc)
+## Tools
 
-A new Flutter project.
+- State management:
+    - Bloc Design Pattern 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Packages:
+    - shared_preferences
+    - conditional_builder_null_safety
+    - flutter_bloc
+    - bloc
+    - fluttertoas
+    - firebase_core
+    - firebase_messaging
+    - cloud_firestore
+    - firebase_auth
+    - flutter_local_notifications
+    - flutter_native_splash
+    - flutter_launcher_icons
+    - flutter_localizations
+    -dio
+    
