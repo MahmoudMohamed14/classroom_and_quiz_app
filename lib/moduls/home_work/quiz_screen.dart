@@ -103,7 +103,7 @@ class QuizScreen extends StatelessWidget {
             itemCount:CubitLayout.get(context).listAnswerStudentModel.length),
       ),
       fallback: (context)=>  const Center(
-        child: CircularProgressIndicator(),
+        child: Text('No Answer'),
       ));
   Widget answerStudentBuildItem({context,required AnswerStudentModel answerModel}) {
     return Column(
