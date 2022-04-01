@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/shared/componant/componant.dart';
-import 'package:quizapp/shared/network/remotely/dio_helper.dart';
 import 'package:quizapp/shared/translate/applocale.dart';
 
 class CreatePost extends StatelessWidget {

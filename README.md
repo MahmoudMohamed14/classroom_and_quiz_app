@@ -1,7 +1,6 @@
 # quizapp
 This is an education application, this application for teacher and student
-teacher can create classroom and create normal quiz or game quiz ,add and delete student,share post ,edit informaion class,delete class and quiz ,
-, chat 
+teacher can create classroom and create normal quiz or game quiz ,add and delete student,share post ,edit informaion class,delete class and quiz 
 student can enter class about code of class and do quiz if student test he can't enter quiz agin and the answer automatically teacher see answer 
 I made by using Firebase, Shared Preference and State Management (Bloc)
 ## Tools

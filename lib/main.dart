@@ -35,13 +35,14 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
           notification.body,
 
 
+
           NotificationDetails(
 
             android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
                 channelDescription: channel.description,
-                icon: android.smallIcon,
+                icon:android.smallIcon ,
                 enableLights: true,
                 enableVibration: true,
                 playSound: true
@@ -81,6 +82,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   enableVibration: true,
   enableLights: true,
   showBadge: true,
+
 
   sound: RawResourceAndroidNotificationSound('notification_sound'),
 

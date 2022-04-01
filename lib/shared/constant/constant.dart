@@ -1,4 +1,5 @@
- import 'package:flutter/cupertino.dart';
+
+import 'package:flutter/material.dart';
 import 'package:quizapp/models/users_model.dart';
 
 const  mainColor=Color(0xff00cfc9);

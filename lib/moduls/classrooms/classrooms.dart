@@ -196,6 +196,7 @@ class ClassScreen extends StatelessWidget {
         CubitLayout.get(context).setClassRoomAndId(model!,classId);
         CubitLayout.get(context).changeBottomNav(index: 0);
         CubitLayout.get(context).getQuiz();
+        subscribeToTopic(topicName: model.code!);
 
         navigateTo(context, LayoutScreen(model: model,));
       },

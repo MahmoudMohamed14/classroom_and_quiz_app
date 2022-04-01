@@ -126,14 +126,13 @@ class CubitLayout extends Cubit<StateLayout> {
         .collection('Classrooms')
         .doc(classRoomModel!.code!)
         .collection('posts').add(Postmodel.toMap()).then((value) {
+      DioHelper.postNotification(to: '/topics/${classRoomModel!.code!}',
+          title: classRoomModel!.className!,
+          body: '${globalUserModel!.name} post in class',
+
+      );
            getPost();
-           DioHelper.postNotification(to: '/topics/${classRoomModel!.code!}',
-               title: classRoomModel!.className!,
-               body: '${globalUserModel!.name} post in class',
-             data: {'addToClaas':'false','deleteClass':'false','className':'', "type": "order",
-               "id": "87",
-               "click_action": "FLUTTER_NOTIFICATION_CLICK"}
-               );
+
           emit(CreatePostSuccessState());
 
     }).catchError((onError){
@@ -197,6 +196,11 @@ class CubitLayout extends Cubit<StateLayout> {
         .add(quizModel.toMap()).then((value) {
           questionList=[];
           getQuiz();
+          DioHelper.postNotification(to: '/topics/${classRoomModel!.code!}',
+            title: classRoomModel!.className!,
+            body: '${globalUserModel!.name} create new quiz',
+
+          );
           Navigator.pop(context);
 
     }).catchError((onError){
