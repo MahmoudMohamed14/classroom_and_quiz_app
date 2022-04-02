@@ -82,11 +82,22 @@ class PeopleScreen extends StatelessWidget {
                 const SizedBox(height: 40,),
                 Row(
                   children: [
-                    Text('${getLang(context, "students_name")}', style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline1!
-                        .copyWith(fontSize: 24),),
+                    Row(
+                      children: [
+                        Text('${getLang(context, "students_name")}', style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline1!
+                            .copyWith(fontSize: 24),),
+                        SizedBox(width: 5,),
+                        Text('${cubit.listStudent.length.toString()}', style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontSize: 24),),
+                      ],
+
+                    ),
                     const Spacer(),
                     if(CubitApp
                         .get(context)

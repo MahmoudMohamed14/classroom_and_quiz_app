@@ -124,7 +124,12 @@ class HomeWork extends StatelessWidget {
           CubitLayout.get(context).addNumberOfOption(number: listOfQuestionText.length);
           CubitLayout.get(context). getStudentAnswer(quizId: quizId!);
 
-          navigateTo(context, QuizScreen(QuizId: quizId,
+        globalUserModel!.isTeacher!?navigateTo(context, QuizScreen(QuizId: quizId,
+            answerList: listOfAnswer,
+            correctAnswer: listOfAnswerText,
+            questionList: listOfQuestionText,
+            isQuizGame:quizModel.isQuizGame
+        )):  navigateAndFinish(context, QuizScreen(QuizId: quizId,
             answerList: listOfAnswer,
             correctAnswer: listOfAnswerText,
             questionList: listOfQuestionText,

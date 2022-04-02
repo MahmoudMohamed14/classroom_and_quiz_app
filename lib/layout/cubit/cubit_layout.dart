@@ -16,6 +16,7 @@ import 'package:quizapp/models/student_model.dart';
 import 'package:quizapp/moduls/home_work/home_work.dart';
 import 'package:quizapp/moduls/people/people.dart';
 import 'package:quizapp/moduls/posts/posts_screen.dart';
+import 'package:quizapp/shared/componant/componant.dart';
 import 'package:quizapp/shared/constant/constant.dart';
 import 'package:quizapp/shared/network/local/cache_helper.dart';
 import 'package:quizapp/shared/network/remotely/dio_helper.dart';
@@ -152,6 +153,7 @@ class CubitLayout extends Cubit<StateLayout> {
         .collection('Classrooms')
         .doc(classRoomModel!.code!)
         .collection('posts')
+        .orderBy('date')
         .get()
         .then((value) {
           value.docs.forEach((element) {
@@ -217,7 +219,9 @@ class CubitLayout extends Cubit<StateLayout> {
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.code)
-        .collection('quiz').get().then((value) {
+        .collection('quiz')
+        .orderBy('date')
+        .get().then((value) {
           value.docs.forEach((element) {
             quizList.add(QuizModel.fromJson(json: element.data()));
             quizIdList.add(element.id);
@@ -259,7 +263,7 @@ class CubitLayout extends Cubit<StateLayout> {
         .collection('studentAnswer').doc(globalUserModel!.email)
         .set(answerStudentModel!.toMap()).then((value) {
 
-            Navigator.pop(context);
+      navigateAndFinish(context,HomeWork() );
           emit(UploadingStudentAnswerSuccessState());
     }).catchError((onError){
       emit(UploadingStudentAnswerErrorState(error: onError.toString()));

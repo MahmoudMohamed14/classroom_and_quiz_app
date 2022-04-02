@@ -1,7 +1,11 @@
+
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/chat_model.dart';
@@ -67,12 +71,12 @@ class ChatDetailScreen extends StatelessWidget {
                             itemBuilder: (context, index) =>
                             myEmail == cubit.messageModel[index].receiverEmail
                                 ?
-                            buildLeftMessage(cubit.messageModel[index])
+                            buildLeftMessage(cubit.messageModel[index],context)
                                 : buildRightMessage(
-                                cubit.messageModel[index])
+                                cubit.messageModel[index],context)
                             ,
                             separatorBuilder: (context, index) =>
-                                SizedBox(height: 10,)
+                                SizedBox()
 
                             ,
                             itemCount: cubit.messageModel.length),
@@ -111,7 +115,7 @@ class ChatDetailScreen extends StatelessWidget {
                           Container(
                             height: 50,
 
-                            color: Colors.green,
+                            color: mainColor,
                             child: MaterialButton(
                               minWidth: 1,
 
@@ -121,9 +125,7 @@ class ChatDetailScreen extends StatelessWidget {
                                     text: txtController.text, receiverEmail: receiverEmail!);
                                 txtController.clear();
                               },
-                              child:const Icon(Icons.send
-                                , size: 30,
-                                color: Colors.white,),
+                              child:const Icon(Icons.send, size: 30, color: Colors.white,),
                             ),
                           )
                         ],
@@ -142,7 +144,7 @@ class ChatDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget buildLeftMessage(ChatModel chatModel) =>
+  Widget buildLeftMessage(ChatModel chatModel,context) =>
       Align(
         alignment: AlignmentDirectional.centerStart,
         child: Padding(
@@ -157,15 +159,29 @@ class ChatDetailScreen extends StatelessWidget {
                 )
             ),
             padding: EdgeInsets.symmetric(
-                vertical: 5,
+                vertical: 10,
                 horizontal: 10
             ),
-            child: Text('${chatModel.text}'),
+            child:  Row(
+            mainAxisSize: MainAxisSize.min,
+
+            children: [
+
+              Text('${chatModel.text}',style: TextStyle(fontSize: 18),),
+              SizedBox(width: 5,),
+              Align(
+                alignment: AlignmentDirectional.bottomEnd,
+                  child: Text('${TimeOfDay.now().format(context).toString()}',style: TextStyle(fontSize: 12),)),
+
+
+
+            ],
+          ),
           ),
         ),
       );
 
-  Widget buildRightMessage(ChatModel chatModel) =>
+  Widget buildRightMessage(ChatModel chatModel,context) =>
       Align(
         alignment: AlignmentDirectional.centerEnd,
         child: Padding(
@@ -183,7 +199,20 @@ class ChatDetailScreen extends StatelessWidget {
                 vertical: 5,
                 horizontal: 10
             ),
-            child: Text('${chatModel.text}'),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+
+              children: [
+                Text('${chatModel.text}',style: TextStyle(fontSize: 18),),
+                SizedBox(width: 5,),
+                Align(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    child: Text('${TimeOfDay.now().format(context).toString()}',style: TextStyle(fontSize: 12),)),
+
+
+
+              ],
+            ),
           ),
         ),
       );
