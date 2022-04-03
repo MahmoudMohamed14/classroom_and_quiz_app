@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
 import 'dart:math';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -196,7 +197,7 @@ class ClassScreen extends StatelessWidget {
         CubitLayout.get(context).setClassRoomAndId(model!,classId);
         CubitLayout.get(context).changeBottomNav(index: 0);
         CubitLayout.get(context).getQuiz();
-        subscribeToTopic(topicName: model.code!);
+       // if(Platform.isAndroid) subscribeToTopic(topicName: model.code!);
 
         navigateTo(context, LayoutScreen(model: model,));
       },

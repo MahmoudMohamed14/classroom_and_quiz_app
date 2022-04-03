@@ -77,4 +77,5 @@ class UpDateClassErrorState extends StateLayout{
 }
 class UpDateClassLoadingState extends StateLayout{}
 class UpDateClassSuccessState extends StateLayout{}
+class ChangeTextChatState extends StateLayout{}
 

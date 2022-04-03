@@ -56,7 +56,7 @@ class ChatDetailScreen extends StatelessWidget {
                 ),
               ),
               body:  Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
 
@@ -82,7 +82,7 @@ class ChatDetailScreen extends StatelessWidget {
                             itemCount: cubit.messageModel.length),
                       ),
                     ),
-                    SizedBox(height: 20,),
+                   // SizedBox(height: 20,),
                     Container(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       decoration: BoxDecoration(
@@ -99,6 +99,9 @@ class ChatDetailScreen extends StatelessWidget {
                               padding: const EdgeInsetsDirectional.only(
                                   start: 5),
                               child: TextFormField(
+                                onChanged: (s){
+                                  cubit.onchangeTextChat(text: s);
+                                },
                                 controller: txtController,
                                 keyboardType: TextInputType.text,
 
@@ -112,11 +115,12 @@ class ChatDetailScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
+                         if(cubit.textChat.isNotEmpty) Container(
                             height: 50,
 
                             color: mainColor,
                             child: MaterialButton(
+
                               minWidth: 1,
 
                               onPressed: () {
@@ -124,6 +128,7 @@ class ChatDetailScreen extends StatelessWidget {
                                     dateTime: DateTime.now().toString(),
                                     text: txtController.text, receiverEmail: receiverEmail!);
                                 txtController.clear();
+                                cubit.onchangeTextChat(text: txtController.text);
                               },
                               child:const Icon(Icons.send, size: 30, color: Colors.white,),
                             ),

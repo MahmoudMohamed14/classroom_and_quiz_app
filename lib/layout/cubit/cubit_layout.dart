@@ -263,7 +263,7 @@ class CubitLayout extends Cubit<StateLayout> {
         .collection('studentAnswer').doc(globalUserModel!.email)
         .set(answerStudentModel!.toMap()).then((value) {
 
-      navigateAndFinish(context,HomeWork() );
+      Navigator.pop(context);
           emit(UploadingStudentAnswerSuccessState());
     }).catchError((onError){
       emit(UploadingStudentAnswerErrorState(error: onError.toString()));
@@ -455,6 +455,12 @@ class CubitLayout extends Cubit<StateLayout> {
 
   }
   void updateClassfromStudent({name,subject,email}){
+
+  }
+  String textChat='';
+  void onchangeTextChat({String text=''}){
+    textChat=text;
+    emit(ChangeTextChatState());
 
   }
 }

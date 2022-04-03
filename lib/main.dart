@@ -24,7 +24,14 @@ import 'package:quizapp/shared/translate/applocale.dart';
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: "AIzaSyBHFq9zx4Br7hBK9mfnxk_JgtYKVa3LDcE",
+        appId: "1:280309312143:web:09a93b33f5cb6d16b09efa",
+        messagingSenderId: "280309312143",
+        projectId: "quiz-app-185cd",
+      )
+    );
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
 
@@ -98,7 +105,14 @@ FlutterLocalNotificationsPlugin();
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options:   FirebaseOptions(
+      apiKey: "AIzaSyBHFq9zx4Br7hBK9mfnxk_JgtYKVa3LDcE",
+      appId: "1:280309312143:web:09a93b33f5cb6d16b09efa",
+      messagingSenderId: "280309312143",
+      projectId: "quiz-app-185cd",
+    )
+  );
   await CacheHelper.init();
   String? lang;
   if(CacheHelper.getData(key: 'lang')!=null) {
