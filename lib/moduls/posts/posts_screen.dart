@@ -1,5 +1,7 @@
 
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizapp/cubit_app/cubit_app.dart';
@@ -72,64 +74,77 @@ class postScreen extends StatelessWidget {
 
     );
   }
-  Widget buildPostItem({context,PostModel? postModel,String?postId})=>Container(
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: mainColor)
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-
-            children: [
-              Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${postModel!.name}',style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold),),
-                     const  SizedBox(height: 4,),
-                      Text('${postModel.date}',style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14,color: Colors.grey),),
-
-                    ],
-                  )),
-
-
-
-             CubitApp.get(context).currentUser.isTeacher!||postModel.email==myEmail? PopupMenuButton(
-
-                  icon: const Icon(Icons.more_horiz,color: mainColor,),
-                  onSelected: (string){
-                    CubitLayout.get(context).deletePost(postId);
-                  },
-
-                  itemBuilder: (context){
-                return deletePost.map(( String e) {
-                  return PopupMenuItem<String>(
-
-                    value: e,
-                      child:Text(e)
-                  );
-                }).toList();
-              }):SizedBox(),
-
-            ],
-          ),
-
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: Colors.grey,
-          ),
-         const SizedBox(height: 20,),
-          Text('${postModel.text}',style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),),
-
-        ],
+  Widget buildPostItem({context,PostModel? postModel,String?postId}){
+    print('bool = ${CubitLayout.get(context).testIsArabic(postModel!.text!)} ');
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: mainColor)
       ),
-    ),
-  );
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+
+          children: [
+            Row(
+
+              children: [
+                Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${postModel.name}',style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold),),
+                        const  SizedBox(height: 4,),
+                        Text('${postModel.date}',style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14,color: Colors.grey),),
+
+                      ],
+                    )),
+
+
+
+                CubitApp.get(context).currentUser.isTeacher!||postModel.email==myEmail? PopupMenuButton(
+
+                    icon: const Icon(Icons.more_horiz,color: mainColor,),
+                    onSelected: (string){
+                      CubitLayout.get(context).deletePost(postId);
+                    },
+
+                    itemBuilder: (context){
+                      return deletePost.map(( String e) {
+                        return PopupMenuItem<String>(
+
+                            value: e,
+                            child:Text(e)
+                        );
+                      }).toList();
+                    }):SizedBox(),
+
+              ],
+            ),
+
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 20,),
+            Row(
+              children: [
+                Expanded(child: Text(
+                  '${postModel.text}',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
+                  textAlign:CubitApp.get(context).lang=='en'?CubitLayout.get(context).testIsArabic(postModel.text!)? TextAlign.left:TextAlign.end:CubitLayout.get(context).testIsArabic(postModel.text!)?TextAlign.end:TextAlign.start,
+                )),
+              ],
+            ),
+
+          ],
+
+        ),
+      ),
+    );
+  }
   List<String>deletePost=['delete'];
 }
 

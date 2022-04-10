@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:280309312143:android:d8d2bd810d21cef0b09efa",
         "android_client_info": {
-          "package_name": "com.example.quizapp"
+          "package_name": "com.quizzes.quizapp"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "280309312143-ueumj03oh6vn9lbpjknndb5p584ucnlh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.quizapp",
+            "package_name": "com.quizzes.quizapp",
             "certificate_hash": "9546aa03415ff3ec216a8717e44e92121b4f92e1"
           }
         },

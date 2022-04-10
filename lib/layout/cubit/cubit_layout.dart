@@ -194,13 +194,13 @@ class CubitLayout extends Cubit<StateLayout> {
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.code)
-        .collection('quiz')
+        .collection('quizzes')
         .add(quizModel.toMap()).then((value) {
           questionList=[];
           getQuiz();
           DioHelper.postNotification(to: '/topics/${classRoomModel!.code!}',
             title: classRoomModel!.className!,
-            body: '${globalUserModel!.name} create new quiz',
+            body: '${globalUserModel!.name} create new quizzes',
 
           );
           Navigator.pop(context);
@@ -219,13 +219,13 @@ class CubitLayout extends Cubit<StateLayout> {
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.code)
-        .collection('quiz')
+        .collection('quizzes')
         .orderBy('date')
         .get().then((value) {
           value.docs.forEach((element) {
             quizList.add(QuizModel.fromJson(json: element.data()));
             quizIdList.add(element.id);
-            //get is test answer for this quiz? if he sign in anther device
+            //get is test answer for this quizzes? if he sign in anther device
            element.reference.
            collection('studentAnswer').
            doc(myEmail).
@@ -249,7 +249,7 @@ class CubitLayout extends Cubit<StateLayout> {
 
     }).catchError((onError){
       emit(GetQuizErrorState(error: onError.toString()));
-      print('error her for get quiz'+onError.toString());
+      print('error her for get quizzes'+onError.toString());
 
     });
   }
@@ -259,7 +259,7 @@ class CubitLayout extends Cubit<StateLayout> {
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.code)
-        .collection('quiz').doc(quizId)
+        .collection('quizzes').doc(quizId)
         .collection('studentAnswer').doc(globalUserModel!.email)
         .set(answerStudentModel!.toMap()).then((value) {
 
@@ -278,7 +278,7 @@ class CubitLayout extends Cubit<StateLayout> {
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.code)
-        .collection('quiz')
+        .collection('quizzes')
         .doc(quizId)
         .collection('studentAnswer').
        get().then((value) {
@@ -320,12 +320,12 @@ class CubitLayout extends Cubit<StateLayout> {
     FirebaseFirestore.instance
         .collection('Classrooms')
         .doc(classRoomModel!.code)
-        .collection('quiz')
+        .collection('quizzes')
         .doc(quizId).delete().then((value) {
       FirebaseFirestore.instance
           .collection('Classrooms')
           .doc(classRoomModel!.code)
-          .collection('quiz')
+          .collection('quizzes')
           .doc(quizId).collection('studentAnswer').snapshots().forEach((element) {
         for (QueryDocumentSnapshot snapshot in element.docs) {
           snapshot.reference.delete();
@@ -462,5 +462,9 @@ class CubitLayout extends Cubit<StateLayout> {
     textChat=text;
     emit(ChangeTextChatState());
 
+  }
+  bool testIsArabic(String topic) {
+    bool isArabic =RegExp(r'^[a-zA-Z0-9-_.~%]{1,900}$').hasMatch(topic);
+    return isArabic;
   }
 }

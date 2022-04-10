@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:quizapp/layout/cubit/cubit_layout.dart';
 import 'package:quizapp/layout/cubit/states_layout.dart';
 import 'package:quizapp/models/chat_model.dart';
@@ -15,6 +15,7 @@ class ChatDetailScreen extends StatelessWidget {
   var txtController = TextEditingController();
   String?receiverEmail;
   String?receiverName;
+
 
 
   ChatDetailScreen({this.receiverEmail,this.receiverName});
@@ -33,12 +34,12 @@ class ChatDetailScreen extends StatelessWidget {
                 title: Row(
 
                   children: [
-                  const  CircleAvatar(
-                     // backgroundImage: NetworkImage('${userModel!.image}',),
-                      foregroundColor: mainColor,
-                      radius: 18,
-                    ),
-                    SizedBox(width: 15),
+                  // const  CircleAvatar(
+                  //    // backgroundImage: NetworkImage('${userModel!.image}',),
+                  //     foregroundColor: mainColor,
+                  //     radius: 18,
+                  //   ),
+                  //   SizedBox(width: 15),
                     Expanded(
                       child: Text('${receiverName}', style: Theme
                           .of(context)
@@ -102,6 +103,7 @@ class ChatDetailScreen extends StatelessWidget {
                                 onChanged: (s){
                                   cubit.onchangeTextChat(text: s);
                                 },
+                                maxLines: null,
                                 controller: txtController,
                                 keyboardType: TextInputType.text,
 

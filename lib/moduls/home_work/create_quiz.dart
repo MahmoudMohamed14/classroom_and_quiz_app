@@ -30,7 +30,7 @@ class CreateQuizScreen extends StatelessWidget {
     return BlocConsumer<CubitLayout,StateLayout>(
       listener: (context,state){
         if(state is GetQuizSuccessState){
-          showToast(text: 'add quiz', state: ToastState.SUCCESS);
+          showToast(text: 'add quizzes', state: ToastState.SUCCESS);
 
 
         }
@@ -95,7 +95,7 @@ class CreateQuizScreen extends StatelessWidget {
                        SizedBox(height: 20,),
                      ],
                     ):const SizedBox(),
-                    defaultEditText(control: titleQuizControl, label: '${getLang(context, "titleQuiz_name")}', validat: (s){
+                    defaultEditText(control: titleQuizControl,maxLine: null, label: '${getLang(context, "titleQuiz_name")}', validat: (s){
                       if(s.toString().isEmpty){
                         return '${getLang(context, "titleQuiz_name")}';
                       }
@@ -207,7 +207,7 @@ class CreateQuizScreen extends StatelessWidget {
                       ),
                     ),
                    const SizedBox(height: 20,),
-                    defaultEditText(control: questionQuizControl, label: '${getLang(context, "question_name")}${cubit.questionList.length+1}', validat: (s){
+                    defaultEditText(control: questionQuizControl,maxLine: null ,label: '${getLang(context, "question_name")}${cubit.questionList.length+1}', validat: (s){
                       if(s.toString().isEmpty){
                         return '${getLang(context, "question_empty")}';
                       }
@@ -217,7 +217,7 @@ class CreateQuizScreen extends StatelessWidget {
 
                     ),
                     const SizedBox(height: 20,),
-                    defaultEditText(control: option1QuizControl, label: '${getLang(context, "option1_name")}', validat: (s){
+                    defaultEditText(control: option1QuizControl,maxLine: null ,label: '${getLang(context, "option1_name")}', validat: (s){
                       if(s.toString().isEmpty){
                         return '${getLang(context, "option1_empty")}';
                       }
@@ -229,6 +229,7 @@ class CreateQuizScreen extends StatelessWidget {
                     const SizedBox(height: 20,),
                     defaultEditText(
                         control:option2QuizControl,
+                        maxLine: null,
                         label: '${getLang(context, "option2_name")}',
                         validat: (s){
                       if(s.toString().isEmpty){
@@ -242,7 +243,7 @@ class CreateQuizScreen extends StatelessWidget {
                  if(cubit.isMulitpleChoice)   Column(
                       children: [
                         const SizedBox(height: 20,),
-                        defaultEditText(control: option3QuizControl, label: '${getLang(context, "option3_name")}', validat: (s){
+                        defaultEditText(control: option3QuizControl,maxLine: null ,label: '${getLang(context, "option3_name")}', validat: (s){
                           if(s.toString().isEmpty&&cubit.isMulitpleChoice){
                             return '${getLang(context, "option3_empty")}';
                           }
@@ -252,7 +253,7 @@ class CreateQuizScreen extends StatelessWidget {
 
                         ),
                         const SizedBox(height: 20,),
-                        defaultEditText(control: option4QuizControl,
+                        defaultEditText(control: option4QuizControl,maxLine: null,
                             label: '${getLang(context, "option4_name")}', validat: (s){
                           if(s.toString().isEmpty&&cubit.isMulitpleChoice){
                             return '${getLang(context, "option4_empty")}';

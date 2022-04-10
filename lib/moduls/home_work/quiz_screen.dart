@@ -49,7 +49,7 @@ class QuizScreen extends StatelessWidget {
 
             },
             items:   [
-              BottomNavigationBarItem(icon:Icon(Icons.quiz_outlined),label: '${getLang(context, "quiz")}'),
+              BottomNavigationBarItem(icon:Icon(Icons.quiz_outlined),label: '${getLang(context, "quizzes")}'),
               BottomNavigationBarItem(icon:Icon(Icons.question_answer_outlined),label:  '${getLang(context, "student_answer")}'),
 
             ],
@@ -88,7 +88,7 @@ class QuizScreen extends StatelessWidget {
 
 
 
-          }, name: 'submit')
+          }, name: '${getLang(context, "submit_name")}')
         ],
       ),
     ),
@@ -159,13 +159,14 @@ class QuizScreen extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Q${index+1}:',style: Theme.of(context).textTheme.headline1,
+            Text('${getLang(context, "q")}${index+1}:',style: Theme.of(context).textTheme.headline1,
             ),
             const  SizedBox(width: 5,),
             Expanded(child: Text(
               ' $question'
               ,style: Theme.of(context).textTheme.headline1
-              ,textAlign: TextAlign.start,
+              ,textAlign: CubitApp.get(context).lang=='en'?CubitLayout.get(context).testIsArabic(question)? TextAlign.left:TextAlign.end:CubitLayout.get(context).testIsArabic(question)?TextAlign.end:TextAlign.start,
+
             ),
 
             ),

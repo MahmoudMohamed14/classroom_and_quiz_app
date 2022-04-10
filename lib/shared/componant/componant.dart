@@ -62,6 +62,7 @@ Widget defaultEditText(
       Function ?onPressSuffix,
       Function()?onPress,
       IconData? sufIcon,
+      int ?maxLine=1,
 
       required FormFieldValidator validat,
       bool enable=false,
@@ -129,6 +130,7 @@ Widget defaultEditText(
 
     },
     enabled: enableText,
+      maxLines:maxLine
 
 
 

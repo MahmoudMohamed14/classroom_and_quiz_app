@@ -73,5 +73,6 @@
   "delete_class": "Delete ClassRoom",
   "wantDelete_class": "Do you want to delete this ClassRoom?",
   "delete_quiz": "Delete Quiz",
-  "wantDelete_quiz": "Do you want to delete this Quiz?"
+  "wantDelete_quiz": "Do you want to delete this Quiz?",
+  "q": "Q"
 }

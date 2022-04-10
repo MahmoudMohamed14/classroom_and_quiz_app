@@ -29,7 +29,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         apiKey: "AIzaSyBHFq9zx4Br7hBK9mfnxk_JgtYKVa3LDcE",
         appId: "1:280309312143:web:09a93b33f5cb6d16b09efa",
         messagingSenderId: "280309312143",
-        projectId: "quiz-app-185cd",
+        projectId: "quizzes-app-185cd",
       )
     );
     RemoteNotification? notification = message.notification;
@@ -83,18 +83,14 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'High Importance Notifications', // title
   // description
   importance: Importance.high,
-
-
   playSound: true,
   enableVibration: true,
   enableLights: true,
   showBadge: true,
 
-
   sound: RawResourceAndroidNotificationSound('notification_sound'),
 
 
-    
 
 
 );
@@ -110,7 +106,7 @@ void main()async {
       apiKey: "AIzaSyBHFq9zx4Br7hBK9mfnxk_JgtYKVa3LDcE",
       appId: "1:280309312143:web:09a93b33f5cb6d16b09efa",
       messagingSenderId: "280309312143",
-      projectId: "quiz-app-185cd",
+      projectId: "quizzes-app-185cd",
     )
   );
   await CacheHelper.init();
@@ -120,6 +116,7 @@ void main()async {
   }else{
     lang='en';
   }
+
 
   var token= await FirebaseMessaging.instance.getToken();
   print('token= '+token.toString());
@@ -310,7 +307,12 @@ class MyApp extends StatelessWidget {
                    }
                    return supportedLang.first;
                  },
-                 home:firstScreen(iscurrentuser:FirebaseAuth.instance.currentUser!=null,context: context ),
+                 home:LayoutBuilder(
+                     builder: (context,size){
+                       print(size.minWidth.toInt());
+                       print(size.minHeight.toInt());
+                       return firstScreen(iscurrentuser:FirebaseAuth.instance.currentUser!=null,context: context );}
+                 ),
                );
              },
 

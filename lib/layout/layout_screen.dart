@@ -28,6 +28,7 @@ class LayoutScreen extends StatelessWidget {
         var cubit =CubitLayout.get(context);
         return Scaffold(
           appBar: AppBar(
+            
             actions: [
               if(globalUserModel!.isTeacher!)  IconButton(onPressed:(){
              navigateTo(context, SettingClassRoomScreen());

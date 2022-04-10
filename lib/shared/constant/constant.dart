@@ -10,5 +10,5 @@ String ?constClassName;
   String? myEmail;
   UsersModel? globalUserModel;
   // key=quiz123456
- //frist and last name=quiz
- //organizname=quiz
+ //frist and last name=quizzes
+ //organizname=quizzes

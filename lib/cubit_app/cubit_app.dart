@@ -250,7 +250,7 @@ void deleteStudentToClassRoom({ required String code,required String studentEmai
       }
     });
     FirebaseFirestore.instance.collection('Classrooms')
-        .doc(code).collection('quiz')
+        .doc(code).collection('quizzes')
 
         .snapshots().forEach((element) {
       for (QueryDocumentSnapshot snapshot in element.docs) {
